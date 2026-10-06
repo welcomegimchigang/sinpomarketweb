@@ -3,7 +3,7 @@ import { HISTORY_ITEMS } from '../../data/marketData';
 
 export const HistorySection: React.FC = () => {
   return (
-    <section id="history" className="py-16 bg-[#fafafa] border-t border-b border-gray-200">
+    <section id="history" className="scroll-mt-28 py-16 bg-[#fafafa] border-t border-b border-gray-200">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         {/* Section Heading */}
         <div className="text-center mb-12">

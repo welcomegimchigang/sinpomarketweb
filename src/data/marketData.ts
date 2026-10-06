@@ -8,20 +8,22 @@ import {
   TransitInfo,
   ParkingInfo,
   MapLink,
+  MarketHighlight,
+  FaqItem,
 } from '../types';
 
 export const FESTIVAL_INFO = {
   name: "신포국제시장 디지털 보물찾기",
   subTitle: "발자국 따라 떠나는 신포 골목 탐험",
-  period: "2026. 11. 1.(일) ~ 11. 2.(월)",
-  periodDetail: "2026. 11. 1.(일) ~ 11. 2.(월) / 12:00 ~ 18:00 (2일간)",
+  period: "2026. 11. 13.(금) ~ 11. 14.(토)",
+  periodDetail: "2026. 11. 13.(금) ~ 11. 14.(토) / 12:00 ~ 18:00 (2일간)",
   hours: "12:00 ~ 18:00",
-  mainLocation: "인천광역시 중구 신포동 6-6 일원 (신포국제시장 전역)",
-  locationShort: "신포국제시장 전역 (신포동 6-6 일원)",
+  mainLocation: "인천광역시 제물포구 우현로49번길 11-5 (신포국제시장 전역)",
+  locationShort: "신포국제시장 전역 (우현로49번길 11-5)",
   targetAudience: "신포국제시장을 방문한 누구나 (별도 앱 설치 없이 스마트폰 카메라로 참여)",
-  announcementRounds: ["1차 발표: 13:00", "2차 발표: 15:00", "3차 발표: 17:00"],
   rewardLocation: "신포국제시장 고객지원센터 앞 리워드 부스",
   rewardMethod: "모바일 당첨 화면을 지참하여 고객지원센터 앞 리워드 부스 방문 후 즉시 수령",
+  drawMethod: "QR 스캔 즉시 실시간 현장 당첨 확인 (대기 시간 없음)",
   contactPhone: "032-772-5812",
   qrCount: 40,
 };
@@ -101,10 +103,10 @@ export const EVENT_FEATURES: EventFeature[] = [
     id: "dynamic-odds",
     title: "숨은 골목일수록 당첨 확률 UP! (실시간 동적 확률)",
     subtitle: "인적이 드문 조용한 골목의 보물일수록 대박 혜택!",
-    description: "다른 사람들이 아직 많이 찾지 않은 조용한 골목의 QR코드일수록 당첨 확률이 실시간으로 증가합니다. 행사 기간 매일 3회(13:00, 15:00, 17:00) 실시간 방문 데이터를 반영해 당첨 확률이 자동 업데이트됩니다.",
+    description: "다른 사람들이 아직 많이 찾지 않은 조용한 골목의 QR코드일수록 당첨 확률이 실시간으로 증가합니다. 행사 기간 방문 데이터를 실시간으로 집계하여 조용한 골목의 당첨 확률이 자동 업데이트됩니다.",
     highlights: [
       "방문객이 적은 안쪽 골목 QR일수록 실시간 당첨 확률 수직 상승!",
-      "매일 3회(13:00, 15:00, 17:00) 실시간 방문 데이터 집계 및 확률 갱신",
+      "실시간 방문 데이터 집계 및 동적 확률 자동 반영",
       "골목 구석구석 발걸음을 옮길수록 유리해지는 스마트 게이미피케이션"
     ],
     badge: "실시간 동적 확률",
@@ -165,7 +167,7 @@ export const REWARD_TIERS: RewardTier[] = [
 export const ANNOUNCEMENT_ITEMS: AnnouncementItem[] = [
   {
     id: "announce-1",
-    title: "신포국제시장 디지털 보물찾기 11월 1일~2일 개최 안내",
+    title: "신포국제시장 디지털 보물찾기 11월 13일~14일 개최 안내",
     author: "sinpomarket",
     category: "행사공지",
     date: "2026. 10. 20",
@@ -180,7 +182,7 @@ export const ANNOUNCEMENT_ITEMS: AnnouncementItem[] = [
     category: "이벤트팁",
     date: "2026. 10. 22",
     imageUrl: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80",
-    summary: "매일 13:00 / 15:00 / 17:00 방문객 데이터를 분석하여 조용한 골목의 QR코드 당첨 확률이 실시간으로 증가합니다.",
+    summary: "스캔 및 방문객 데이터를 실시간 분석하여 인적이 드문 안쪽 골목의 QR코드 당첨 확률이 지속적으로 상승합니다.",
     tag: "동적확률",
   },
   {
@@ -333,7 +335,7 @@ export const PARKING_INFO: ParkingInfo[] = [
     benefit: "경차·저공해 50% 감면 / 시장 구매 영수증 시 1시간 무료",
     distance: "시장 입구 도보 1분",
     walkingTime: "약 80m",
-    address: "인천 중구 신포로23번길 19",
+    address: "인천 제물포구 신포로23번길 19",
   },
   {
     name: "답동성당 공영주차장",
@@ -342,7 +344,7 @@ export const PARKING_INFO: ParkingInfo[] = [
     benefit: "넓은 주차면적, 전기차 충전기 8기 구비",
     distance: "시장 입구 도보 3분",
     walkingTime: "약 200m (추천)",
-    address: "인천 중구 우현로 50",
+    address: "인천 제물포구 우현로 50",
   },
 ];
 
@@ -372,3 +374,86 @@ export const MAP_LINKS: MapLink[] = [
     hoverColor: "hover:bg-[#0F172A]",
   },
 ];
+
+export const MARKET_INFO = {
+  name: "신포국제시장",
+  tagline: "1883년부터 이어온 인천의 맛과 정",
+  intro:
+    "인천 개항과 함께 태동한 신포국제시장은 140여 년 동안 인천 시민의 삶과 함께해 온 대표 전통시장입니다. 닭강정, 쫄면, 화덕만두 등 이곳에서 시작된 먹거리와 정겨운 골목이 오늘도 방문객을 맞이합니다.",
+  address: "인천광역시 제물포구 우현로49번길 11-5",
+  openHours: "매일 10:00 ~ 20:00 (점포별 상이)",
+};
+
+export const MARKET_HIGHLIGHTS: MarketHighlight[] = [
+  {
+    id: "history",
+    title: "140년 역사의 시장",
+    description: "1883년 인천 개항 후 '푸성귀전'에서 시작해 인천 서민 경제의 중심으로 성장했습니다.",
+    stat: "1883",
+    statLabel: "개항과 함께 시작",
+    icon: "Landmark",
+  },
+  {
+    id: "food",
+    title: "원조 먹거리의 고향",
+    description: "닭강정, 쫄면, 화덕만두, 맷돌칼국수 등 수십 년 한우물을 판 노포들이 모여 있습니다.",
+    stat: "40년+",
+    statLabel: "전통 노포의 맛",
+    icon: "Utensils",
+  },
+  {
+    id: "alley",
+    title: "숨은 골목 탐방",
+    description: "등대골목, 한줄골목, 신포옛길 등 걸을수록 새로운 이야기가 나오는 골목 여행지입니다.",
+    stat: "5곳",
+    statLabel: "테마 골목",
+    icon: "Footprints",
+  },
+  {
+    id: "access",
+    title: "편리한 접근성",
+    description: "수인분당선 신포역에서 도보 5분, 공영주차장도 가까워 가족 나들이에 좋습니다.",
+    stat: "5분",
+    statLabel: "신포역 도보",
+    icon: "Train",
+  },
+];
+
+export const FAQ_ITEMS: FaqItem[] = [
+  {
+    id: "faq-app",
+    question: "별도의 앱을 설치해야 하나요?",
+    answer:
+      "아니요. 스마트폰 기본 카메라 앱으로 QR코드를 비추기만 하면 바로 참여할 수 있습니다. 아이폰과 안드로이드 모두 가능합니다.",
+  },
+  {
+    id: "faq-who",
+    question: "누가 참여할 수 있나요?",
+    answer:
+      "신포국제시장을 방문한 누구나 참여할 수 있습니다. 행사 기간 중 시장 전역에서 자유롭게 즐기실 수 있습니다.",
+  },
+  {
+    id: "faq-qr",
+    question: "QR코드는 어디에 있나요?",
+    answer:
+      "시장 바닥의 발자국 스티커를 따라가면 골목과 점포 인근에 숨겨진 총 40개의 QR코드를 만날 수 있습니다. 메인 통로에서 벗어난 안쪽 골목을 살펴보세요.",
+  },
+  {
+    id: "faq-odds",
+    question: "당첨 확률은 어떻게 바뀌나요?",
+    answer:
+      "방문객이 적은 골목의 QR코드일수록 당첨 확률이 올라가며, 실시간 스캔 데이터를 바탕으로 자동 갱신됩니다. QR코드를 스캔하는 즉시 스마트폰 화면에서 당첨 여부를 바로 확인하실 수 있습니다.",
+  },
+  {
+    id: "faq-reward",
+    question: "경품은 어디서 어떻게 받나요?",
+    answer:
+      "모바일 당첨 화면을 지참해 신포국제시장 고객지원센터 앞 리워드 부스를 방문하시면 즉시 수령할 수 있습니다. 운영 시간은 행사 기간 매일 12:00 ~ 18:00입니다.",
+  },
+  {
+    id: "faq-contact",
+    question: "문의는 어디로 하면 되나요?",
+    answer: "신포국제시장 공식 인스타그램(@sinpo.dream)으로 문의해 주세요.",
+  },
+];
+

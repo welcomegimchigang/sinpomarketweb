@@ -87,7 +87,7 @@ export const FoodSection: React.FC = () => {
   });
 
   return (
-    <section id="food" className="w-full bg-white">
+    <section id="food" className="w-full bg-white scroll-mt-28">
       {/* 1. Yellow Story Market Banner (Kwangjang Market Benchmark) */}
       <div className="relative w-full py-16 sm:py-20 bg-[#E5A93C] overflow-hidden flex flex-col items-center justify-center text-center px-4">
         {/* Giant Watermark Text */}

@@ -14,7 +14,7 @@ export const LocationSection: React.FC = () => {
   };
 
   return (
-    <section id="location" className="py-16 bg-white border-b border-gray-200">
+    <section id="location" className="scroll-mt-28 py-16 bg-white border-b border-gray-200">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         {/* Section Heading */}
         <div className="text-center mb-10">

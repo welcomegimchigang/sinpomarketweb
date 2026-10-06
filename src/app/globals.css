@@ -10,6 +10,8 @@ html {
   color: #333333;
   background-color: #ffffff;
   -webkit-tap-highlight-color: transparent;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 body {
@@ -17,6 +19,8 @@ body {
   padding: 0;
   overflow-x: hidden;
   font-family: 'Noto Sans KR', sans-serif;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 /* Custom scrollbar styling */
@@ -42,3 +46,21 @@ body {
   background-color: #fef08a;
   color: #854d0e;
 }
+
+/* 보물지도 발자국 점선 흐름 애니메이션 */
+@keyframes dash-flow {
+  to {
+    stroke-dashoffset: -28;
+  }
+}
+
+.animate-dash {
+  animation: dash-flow 1.6s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-dash {
+    animation: none;
+  }
+}
+

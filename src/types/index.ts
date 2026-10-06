@@ -91,3 +91,19 @@ export interface MapLink {
   textColor: string;
   hoverColor: string;
 }
+
+export interface MarketHighlight {
+  id: string;
+  title: string;
+  description: string;
+  stat: string;
+  statLabel: string;
+  icon: string;
+}
+
+export interface FaqItem {
+  id: string;
+  question: string;
+  answer: string;
+}
+
