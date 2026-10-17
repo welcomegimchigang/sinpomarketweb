@@ -11,7 +11,7 @@ export const EVENT_OG_IMAGE = `${SITE_URL}/og-event.png`;
 
 // [검색엔진 소유권 확인 코드] 사용자가 직접 값을 입력하는 자리
 export const GOOGLE_SITE_VERIFICATION = ''; // 구글 서치 콘솔 인증 코드 (예: 'abc123xyz...')
-export const NAVER_SITE_VERIFICATION = ''; // 네이버 서치어드바이저 인증 코드 (예: 'abc123xyz...')
+export const NAVER_SITE_VERIFICATION = '6ac094598822720276ba91e808c62223a51d3879'; // 네이버 서치어드바이저 인증 코드
 
 interface PageSeoParams {
   title: string;
