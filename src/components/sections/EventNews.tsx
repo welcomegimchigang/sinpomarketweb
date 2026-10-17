@@ -26,7 +26,7 @@ export const EventNews: React.FC = () => {
               <div className="relative w-32 shrink-0 overflow-hidden bg-gray-100 sm:w-44">
                 <img
                   src={item.imageUrl}
-                  alt={item.title}
+                  alt={`${item.title} - 신포국제시장 보물찾기 ${item.category} 안내`}
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
               </div>

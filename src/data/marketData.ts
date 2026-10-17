@@ -24,7 +24,8 @@ export const FESTIVAL_INFO = {
   rewardLocation: "신포국제시장 고객지원센터 앞 리워드 부스",
   rewardMethod: "모바일 당첨 화면을 지참하여 고객지원센터 앞 리워드 부스 방문 후 즉시 수령",
   drawMethod: "QR 스캔 즉시 실시간 현장 당첨 확인 (대기 시간 없음)",
-  contactPhone: "032-772-5812",
+  contactInstagram: "@sinpo.dream",
+  contactUrl: "https://instagram.com/sinpo.dream",
   qrCount: 40,
 };
 

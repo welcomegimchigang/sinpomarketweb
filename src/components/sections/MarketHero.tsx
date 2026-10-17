@@ -8,6 +8,8 @@ export const MarketHero: React.FC = () => {
     <section id="intro" className="relative w-full overflow-hidden bg-stone-900 border-b border-gray-200">
       {/* Background Market Image */}
       <div
+        role="img"
+        aria-label="신포국제시장 전통 상가 골목 전경 실사"
         className="absolute inset-0 bg-cover bg-center filter brightness-[55%] contrast-[110%]"
         style={{
           backgroundImage: `url('/sinpoimg.jpeg')`,

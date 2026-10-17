@@ -31,7 +31,11 @@ export const EventTreasureMap: React.FC = () => {
       {/* glow */}
       <div className="absolute -inset-6 rounded-[2rem] bg-gradient-to-br from-[#E5A93C]/20 via-transparent to-[#00ACC1]/20 blur-2xl" />
 
-      <div className="relative aspect-[400/480] w-full overflow-hidden rounded-2xl border border-[#E5A93C]/30 bg-[#f4e6c8] shadow-2xl shadow-black/40">
+      <div
+        role="img"
+        aria-label="신포국제시장 골목 탐험 보물지도 일러스트 (고객지원센터, 푸성귀전, 등대골목, 한줄골목, 신포옛길 코스)"
+        className="relative aspect-[400/480] w-full overflow-hidden rounded-2xl border border-[#E5A93C]/30 bg-[#f4e6c8] shadow-2xl shadow-black/40"
+      >
         {/* parchment texture */}
         <div
           className="absolute inset-0 opacity-60"

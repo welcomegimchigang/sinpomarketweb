@@ -13,6 +13,8 @@ export const EventHero: React.FC = () => {
     >
       {/* Background Poster Image */}
       <div
+        role="img"
+        aria-label="신포국제시장 디지털 보물찾기 행사 공식 포스터 배경"
         className="absolute inset-0 bg-cover bg-center filter brightness-[38%] contrast-[110%]"
         style={{
           backgroundImage: `url('/sinpoposter.png')`,

@@ -10,9 +10,9 @@ export const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pb-12 border-b border-[#2a2a2a]">
           {/* Col 1: RECENT POSTS */}
           <div className="space-y-3">
-            <h4 className="text-white text-xs font-bold tracking-wider uppercase">
+            <h2 className="text-white text-xs font-bold tracking-wider uppercase">
               RECENT POSTS
-            </h4>
+            </h2>
             <div className="space-y-3 pt-1">
               <div>
                 <Link
@@ -52,9 +52,9 @@ export const Footer: React.FC = () => {
 
           {/* Col 2: STORY MARKET */}
           <div className="space-y-3">
-            <h4 className="text-white text-xs font-bold tracking-wider uppercase">
+            <h2 className="text-white text-xs font-bold tracking-wider uppercase">
               STORY MARKET
-            </h4>
+            </h2>
             <div className="flex flex-wrap gap-1.5 pt-1">
               {[
                 '보물찾기',
@@ -80,9 +80,9 @@ export const Footer: React.FC = () => {
 
           {/* Col 3: INSTAGRAM (CONTACT) */}
           <div className="space-y-3">
-            <h4 className="text-white text-xs font-bold tracking-wider uppercase">
+            <h2 className="text-white text-xs font-bold tracking-wider uppercase">
               INSTAGRAM
-            </h4>
+            </h2>
             <div className="pt-1 space-y-2">
               <a
                 href="https://instagram.com/sinpo.dream"

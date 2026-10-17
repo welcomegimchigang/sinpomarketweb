@@ -9,29 +9,70 @@ import { EventFeatures } from '../../components/sections/EventFeatures';
 import { EventRewards } from '../../components/sections/EventRewards';
 import { EventNews } from '../../components/sections/EventNews';
 import { EventFaq } from '../../components/sections/EventFaq';
+import { buildPageMetadata, EVENT_OG_IMAGE, SITE_URL } from '../../lib/seo';
 
-export const metadata: Metadata = {
-  title: '신포국제시장 디지털 보물찾기 : 발자국 따라 떠나는 신포 골목 탐험',
-  description:
-    '2026. 11. 13(금) ~ 11. 14(토) 12:00~18:00 신포국제시장 전역! 바닥 발자국을 따라 숨겨진 40개 QR코드를 스마트폰 카메라로 스캔하고 온누리상품권과 푸짐한 경품을 받으세요.',
-  openGraph: {
-    title: '신포국제시장 디지털 보물찾기 : 발자국 따라 떠나는 신포 골목 탐험',
-    description:
-      '스마트폰 카메라로 숨은 40개 QR코드를 찾아라! 실시간 동적 확률 UP! 100% 스토리텔링 & 푸짐한 온누리상품권 경품',
-    type: 'website',
-    locale: 'ko_KR',
-    siteName: '신포국제시장',
+const EVENT_TITLE = '신포국제시장 디지털 보물찾기 (2026.11.13~14) | 발자국 따라 골목 탐험';
+const EVENT_DESCRIPTION =
+  '2026년 11월 13일부터 14일까지 신포국제시장에서 열리는 디지털 보물찾기! 시장 바닥 발자국을 따라 숨은 40개 QR코드를 스마트폰으로 스캔하세요. 온누리상품권 10만원과 푸짐한 경품이 즉석에서 쏟아집니다.';
+
+export const metadata: Metadata = buildPageMetadata({
+  title: EVENT_TITLE,
+  description: EVENT_DESCRIPTION,
+  path: '/event/',
+  imageUrl: EVENT_OG_IMAGE,
+  imageAlt: '신포국제시장 디지털 보물찾기 행사 공식 포스터 및 안내',
+});
+
+// Event 구조화 데이터 (Schema.org Event)
+const eventJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Event',
+  name: '신포국제시장 디지털 보물찾기 : 발자국 따라 떠나는 신포 골목 탐험',
+  description: EVENT_DESCRIPTION,
+  image: [EVENT_OG_IMAGE],
+  startDate: '2026-11-13T12:00:00+09:00',
+  endDate: '2026-11-14T18:00:00+09:00',
+  eventStatus: 'https://schema.org/EventScheduled',
+  eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+  location: {
+    '@type': 'Place',
+    name: '신포국제시장 전역',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: '우현로49번길 11-5',
+      addressLocality: '인천광역시',
+      addressRegion: '제물포구',
+      postalCode: '22314',
+      addressCountry: 'KR',
+    },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: 37.4705,
+      longitude: 126.6268,
+    },
   },
-  twitter: {
-    card: 'summary_large_image',
-    title: '신포국제시장 디지털 보물찾기 (11.13~11.14)',
-    description: '발자국 따라 떠나는 신포 골목 탐험! 40개 숨은 QR코드를 찾고 온누리상품권을 받으세요.',
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'KRW',
+    availability: 'https://schema.org/InStock',
+    url: `${SITE_URL}/event/`,
+    validFrom: '2026-10-01T00:00:00+09:00',
+  },
+  organizer: {
+    '@type': 'Organization',
+    name: '신포터즈팀 (인천대학교 경제학과 지역사회동행 PBL)',
+    url: 'https://instagram.com/sinpo.dream',
   },
 };
 
 export default function EventPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(eventJsonLd) }}
+      />
       <EventHero />
       <EventStats />
       <EventSteps />

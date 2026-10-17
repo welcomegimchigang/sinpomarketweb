@@ -168,7 +168,7 @@ export const FoodSection: React.FC = () => {
                 <div className="relative h-56 w-full overflow-hidden bg-gray-100">
                   <img
                     src={item.imageUrl}
-                    alt={item.name}
+                    alt={`${item.name} - 신포국제시장 ${item.categoryLabel} (${item.since})`}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                   {/* Subtle Text Overlay on Image */}
