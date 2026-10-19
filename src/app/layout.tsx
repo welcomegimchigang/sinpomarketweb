@@ -15,21 +15,24 @@ import {
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: '신포국제시장 | 1883년부터 이어온 인천 대표 전통시장',
+    default: '신포국제시장 (신포시장) | 1883년 전통 인천 대표 시장 먹거리·주차',
     template: `%s | ${SITE_NAME}`,
   },
   description:
-    '1883년 개항과 함께 시작된 140년 전통의 신포국제시장. 원조 닭강정, 쫄면, 화덕만두 등 대표 먹거리부터 정겨운 테마 골목 탐방, 대중교통 및 공영주차장 정보까지 신포시장의 모든 여행 정보를 한눈에 만나보세요.',
+    '1883년 개항 140년 전통의 신포국제시장(신포시장). 원조 닭강정, 쫄면, 화덕만두 등 대표 먹거리 맛집부터 골목 탐방, 신포시장 대중교통 및 주차 꿀팁까지 알찬 여행 정보를 한눈에 만나보세요.',
   keywords: [
     '신포국제시장',
     '신포시장',
-    '신포 닭강정',
-    '신포 화덕만두',
-    '신포 쫄면',
-    '인천 전통시장',
+    '인천 신포시장',
+    '인천 신포국제시장',
+    '신포시장 닭강정',
+    '신포시장 먹거리',
+    '신포시장 주차장',
+    '신포시장 맛집',
+    '신포시장 영업시간',
+    '신포시장 온누리상품권',
     '인천 가볼만한곳',
     '신포국제시장 디지털 보물찾기',
-    '신포시장 맛집',
   ],
   authors: [{ name: '신포국제시장 프로젝트팀' }],
   creator: '신포국제시장 프로젝트팀',
@@ -41,9 +44,9 @@ export const metadata: Metadata = {
     canonical: `${SITE_URL}/`,
   },
   openGraph: {
-    title: '신포국제시장 | 1883년부터 이어온 인천 대표 전통시장',
+    title: '신포국제시장 (신포시장) | 1883년 전통 인천 대표 시장 먹거리·주차',
     description:
-      '1883년 개항과 함께 시작된 140년 전통의 신포국제시장. 원조 닭강정, 쫄면, 화덕만두 등 대표 먹거리부터 정겨운 테마 골목 탐방, 대중교통 및 공영주차장 정보까지 신포시장의 모든 여행 정보를 한눈에 만나보세요.',
+      '1883년 개항 140년 전통의 신포국제시장(신포시장). 원조 닭강정, 쫄면, 화덕만두 등 대표 먹거리 맛집부터 골목 탐방, 신포시장 대중교통 및 주차 꿀팁까지 알찬 여행 정보를 한눈에 만나보세요.',
     url: `${SITE_URL}/`,
     siteName: SITE_NAME,
     locale: 'ko_KR',
@@ -53,15 +56,15 @@ export const metadata: Metadata = {
         url: DEFAULT_OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: '신포국제시장 - 1883년부터 이어온 인천의 맛과 정',
+        alt: '신포국제시장 (신포시장) - 1883년부터 이어온 인천의 맛과 정',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: '신포국제시장 | 1883년부터 이어온 인천 대표 전통시장',
+    title: '신포국제시장 (신포시장) | 1883년 전통 인천 대표 시장 먹거리·주차',
     description:
-      '1883년 개항과 함께 시작된 140년 전통의 신포국제시장. 닭강정, 쫄면, 화덕만두 등 대표 먹거리와 정겨운 골목 탐방 안내.',
+      '1883년 개항 140년 전통의 신포국제시장(신포시장). 원조 닭강정, 쫄면, 화덕만두 등 대표 먹거리 맛집과 신포시장 골목 탐방 안내.',
     images: [DEFAULT_OG_IMAGE],
   },
   robots: {
@@ -110,14 +113,21 @@ const siteJsonLd = {
       inLanguage: 'ko-KR',
     },
     {
-      '@type': 'ShoppingCenter',
+      '@type': ['ShoppingCenter', 'TouristAttraction'],
       '@id': `${SITE_URL}/#market`,
       name: SITE_NAME,
-      alternateName: 'Sinpo International Market',
+      alternateName: [
+        '신포시장',
+        '인천 신포시장',
+        '인천 신포국제시장',
+        'Sinpo Market',
+        'Sinpo International Market',
+      ],
       url: SITE_URL,
       image: DEFAULT_OG_IMAGE,
       description:
-        '1883년 인천 개항과 함께 태동한 140여 년 역사의 대표 전통시장. 닭강정, 쫄면, 화덕만두 등 원조 먹거리와 정겨운 골목길.',
+        '1883년 인천 개항과 함께 태동한 140여 년 역사의 대표 전통시장. 원조 닭강정, 쫄면, 화덕만두 등 원조 먹거리와 정겨운 골목길.',
+      hasMap: 'https://map.naver.com/p/search/%EC%8B%A0%ED%8F%AC%EA%B5%AD%EC%A0%9C%EC%8B%9C%EC%9E%A5',
       address: {
         '@type': 'PostalAddress',
         streetAddress: '우현로49번길 11-5',

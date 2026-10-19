@@ -23,7 +23,7 @@ export const MarketHero: React.FC = () => {
         </span>
 
         <h1 className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight leading-tight mb-4 drop-shadow-lg">
-          {MARKET_INFO.name}
+          {MARKET_INFO.name} <span className="text-2xl sm:text-4xl md:text-5xl font-bold text-amber-200/90 block sm:inline font-sans">(신포시장)</span>
         </h1>
 
         <p className="text-lg sm:text-2xl md:text-3xl text-amber-300 font-bold mb-5 drop-shadow">

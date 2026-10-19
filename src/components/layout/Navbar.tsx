@@ -10,6 +10,7 @@ const MAIN_LINKS = [
   { href: '/#food', label: '스토리마켓', mobileLabel: '스토리마켓 (신포 먹거리)' },
   { href: '/#history', label: '100년역사', mobileLabel: '100년 역사' },
   { href: '/#location', label: '오시는길', mobileLabel: '오시는 길 & 주차안내' },
+  { href: '/#faq', label: '이용안내', mobileLabel: '이용안내 & FAQ' },
 ];
 
 const EVENT_LINK = { href: '/event', label: '디지털 보물찾기', mobileLabel: '디지털 보물찾기 (이벤트)' };
