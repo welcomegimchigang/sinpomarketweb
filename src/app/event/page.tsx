@@ -1,7 +1,7 @@
 import React from 'react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { MapPin, ArrowRight } from 'lucide-react';
+import { MapPin, ArrowRight, BookOpen } from 'lucide-react';
 import { EventHero } from '../../components/sections/EventHero';
 import { EventStats } from '../../components/sections/EventStats';
 import { EventSteps } from '../../components/sections/EventSteps';
@@ -13,7 +13,7 @@ import { buildPageMetadata, EVENT_OG_IMAGE, SITE_URL } from '../../lib/seo';
 
 const EVENT_TITLE = '신포국제시장 디지털 보물찾기 (2026.11.13~14) | 발자국 따라 골목 탐험';
 const EVENT_DESCRIPTION =
-  '2026년 11월 13일부터 14일까지 신포국제시장에서 열리는 디지털 보물찾기! 시장 바닥 발자국을 따라 숨은 40개 QR코드를 스마트폰으로 스캔하세요. 온누리상품권 10만원과 푸짐한 경품이 즉석에서 쏟아집니다.';
+  '2026년 11월 13일부터 14일까지 신포국제시장에서 열리는 디지털 보물찾기! 시장 바닥 발자국을 따라 숨은 40개 QR코드를 스마트폰으로 스캔하세요. 1등 올리브영 3만원권(총 6명) 등 푸짐한 경품이 즉석에서 쏟아집니다.';
 
 export const metadata: Metadata = buildPageMetadata({
   title: EVENT_TITLE,
@@ -81,14 +81,14 @@ export default function EventPage() {
       <EventNews />
       <EventFaq />
 
-      {/* 오시는 길 CTA */}
+      {/* 오시는 길 & 역사 스토리북 CTA */}
       <section className="relative overflow-hidden bg-gradient-to-br from-[#3a2713] to-[#1c130b] py-16 text-white">
         <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-[#E5A93C]/15 blur-3xl" />
         <div className="relative mx-auto max-w-6xl space-y-4 px-4 text-center sm:px-6">
           <MapPin className="mx-auto h-9 w-9 text-[#E5A93C]" />
           <h2 className="text-2xl font-black sm:text-3xl">지금, 신포 골목으로 떠나볼까요?</h2>
           <p className="text-sm text-gray-300">
-            신포역 3번 출구에서 도보 5분! 대중교통과 공영주차장 정보를 확인하세요.
+            수인분당선 신포역 4번 출구에서 도보 약 3분! 답동성당 공영주차장(2시간 무료) 등 교통·주차 정보와 신포 100년 이야기를 확인하세요.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
             <Link
@@ -99,10 +99,17 @@ export default function EventPage() {
               <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
+              href="/history"
+              className="flex items-center gap-2 rounded border border-[#E5A93C]/50 bg-[#E5A93C]/10 px-6 py-3 text-sm font-bold text-amber-200 transition-colors hover:bg-[#E5A93C]/20"
+            >
+              <BookOpen className="h-4 w-4" />
+              신포 100년 역사 &amp; 15개 테마 카드 보기
+            </Link>
+            <Link
               href="/"
               className="rounded border border-white/25 px-6 py-3 text-sm font-medium text-gray-200 transition-colors hover:bg-white/10"
             >
-              신포시장 둘러보기
+              현재 시장 둘러보기
             </Link>
           </div>
         </div>

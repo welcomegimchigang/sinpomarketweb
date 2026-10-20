@@ -1,5 +1,5 @@
 import React from 'react';
-import { Trophy, Award, Gift, Sparkles, Clock, MapPin, Bell } from 'lucide-react';
+import { Trophy, Award, Gift, Sparkles, MapPin, Bell, Instagram } from 'lucide-react';
 import { REWARD_TIERS, FESTIVAL_INFO } from '../../data/marketData';
 
 const iconMap = { Trophy, Award, Gift, Sparkles };
@@ -7,25 +7,25 @@ const iconMap = { Trophy, Award, Gift, Sparkles };
 const INSTANT_SYSTEM = [
   {
     step: '01',
-    title: '스마트폰 QR 즉석 추첨',
-    desc: '숨겨진 보물 QR을 카메라로 비추면 대기 시간 없이 즉석에서 당첨 결과가 화면에 나타납니다.',
+    title: '스마트폰 QR 스캔 & 카드 스토리 확인',
+    desc: '시장 거리에 부착된 QR을 휴대폰 카메라로 스캔해 과거·현재·미래 테마 카드와 퀴즈를 만나보세요.',
   },
   {
     step: '02',
-    title: '실시간 골목 동적 확률',
-    desc: '인적이 드문 조용한 골목일수록 1등/2등 등 고액 당첨 확률이 실시간으로 더욱 높아집니다.',
+    title: '하단 스크롤 즉시 당첨 확인',
+    desc: '화면을 아래로 스크롤하여 대기 시간 없이 즉석에서 당첨 결과를 바로 확인합니다.',
   },
   {
     step: '03',
-    title: '리워드 부스 즉시 수령',
-    desc: '당첨된 모바일 화면을 소지하고 운영 시간(12:00~18:00) 내 고객지원센터 앞 부스에서 바로 수령하세요.',
+    title: '신포국제시장 지원센터 앞 즉시 수령',
+    desc: '모바일 당첨 화면을 소지하고 운영 시간(12:00~18:00) 내 신포국제시장 지원센터(고객지원센터) 앞 리워드 부스에서 바로 수령하세요.',
   },
 ];
 
 const CLAIM_STEPS = [
-  "스마트폰으로 QR 스캔 후 '모바일 당첨권' 화면을 열어둡니다.",
-  '고객지원센터 앞 리워드 부스 스태프에게 당첨 화면을 제시합니다.',
-  '온누리상품권과 한정판 굿즈를 현장에서 즉시 수령합니다.',
+  "스마트폰으로 QR 스캔 후 화면을 아래로 스크롤해 '모바일 당첨 화면'을 열어둡니다.",
+  '신포국제시장 지원센터(고객지원센터) 앞 리워드 부스 스태프에게 당첨 화면을 제시합니다.',
+  '1등 올리브영 3만원권(총 6명)을 비롯한 당첨 경품을 현장에서 즉시 수령합니다.',
 ];
 
 export const EventRewards: React.FC = () => {
@@ -40,7 +40,7 @@ export const EventRewards: React.FC = () => {
             풍성한 <span className="text-[#8C6239]">보물 경품</span>
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-sm text-[#6b5640]">
-            모바일 당첨 화면을 고객지원센터 앞 리워드 부스에 보여주시면 바로 받아가실 수 있어요.
+            모바일 당첨 화면을 신포국제시장 지원센터(고객지원센터) 앞 리워드 부스에 제시하시면 즉시 수령할 수 있습니다.
           </p>
         </div>
 
@@ -102,7 +102,7 @@ export const EventRewards: React.FC = () => {
           <div className="rounded-2xl border border-[#8C6239]/20 bg-white p-6 sm:p-8">
             <h3 className="mb-6 flex items-center gap-2 text-base font-black text-[#2a1b0e]">
               <Sparkles className="h-4 w-4 text-[#8C6239]" />
-              현장 즉석 당첨 &amp; 실시간 추첨
+              QR 이용 방식 &amp; 즉석 당첨 확인
             </h3>
             <ol className="relative space-y-6 border-l-2 border-dashed border-[#8C6239]/30 pl-6">
               {INSTANT_SYSTEM.map((item, i) => (
@@ -115,7 +115,7 @@ export const EventRewards: React.FC = () => {
                   <p className="mt-0.5 text-xs text-[#6b5640]">{item.desc}</p>
                   {i === INSTANT_SYSTEM.length - 1 && (
                     <p className="mt-2 text-[11px] font-semibold text-[#00ACC1]">
-                      * 정해진 발표 시간을 기다릴 필요 없이, QR 스캔 즉시 당첨 여부를 확인하실 수 있습니다.
+                      * 행사 일정: {FESTIVAL_INFO.periodDetail}
                     </p>
                   )}
                 </li>
@@ -134,7 +134,7 @@ export const EventRewards: React.FC = () => {
                 {FESTIVAL_INFO.rewardLocation}
               </span>
               <span className="mt-1 block text-xs text-gray-300">
-                신포국제시장 중앙 통로 안쪽 고객지원센터 1층 정문 앞 리워드 접수 데스크
+                모바일 당첨 화면 제시 즉시 수령 ({FESTIVAL_INFO.periodDetail})
               </span>
             </div>
             <ol className="space-y-3">
@@ -147,9 +147,20 @@ export const EventRewards: React.FC = () => {
                 </li>
               ))}
             </ol>
-            <div className="mt-5 flex items-center gap-2 border-t border-white/10 pt-4 text-[11px] text-gray-400">
-              <Bell className="h-3.5 w-3.5 shrink-0 text-[#E5A93C]" />
-              운영 시간: 행사 기간 매일 {FESTIVAL_INFO.hours} (마감 시간 엄수)
+            <div className="mt-5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-t border-white/10 pt-4 text-[11px] text-gray-400">
+              <span className="flex items-center gap-2">
+                <Bell className="h-3.5 w-3.5 shrink-0 text-[#E5A93C]" />
+                운영 시간: {FESTIVAL_INFO.period} {FESTIVAL_INFO.hours}
+              </span>
+              <a
+                href={FESTIVAL_INFO.contactUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-[#E5A93C] hover:underline font-semibold"
+              >
+                <Instagram className="h-3.5 w-3.5" />
+                문의: {FESTIVAL_INFO.contactInstagram}
+              </a>
             </div>
           </div>
         </div>

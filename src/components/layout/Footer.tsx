@@ -16,24 +16,24 @@ export const Footer: React.FC = () => {
             <div className="space-y-3 pt-1">
               <div>
                 <Link
-                  href="/event#how-to-play"
+                  href="/#certifications"
                   className="text-gray-300 hover:text-white transition-colors block text-xs leading-snug"
                 >
-                  디지털 보물찾기 3단계 참여 가이드
+                  2025 인천지역유산 선정 &amp; 2023·2026 K-관광마켓 2회 연속 선정
                 </Link>
                 <span className="text-[11px] text-gray-500 block mt-0.5">
-                  2026년 10월 25일
+                  현재 시장 홍보관
                 </span>
               </div>
               <div>
                 <Link
-                  href="/event#features"
+                  href="/history"
                   className="text-gray-300 hover:text-white transition-colors block text-xs leading-snug"
                 >
-                  숨은 골목 40개 QR 실시간 동적 확률 시스템
+                  신포 100년 역사관 &amp; 工자형 골목 15개 테마 카드 아카이브
                 </Link>
                 <span className="text-[11px] text-gray-500 block mt-0.5">
-                  2026년 10월 26일
+                  100년 역사 홍보관
                 </span>
               </div>
               <div>
@@ -41,10 +41,10 @@ export const Footer: React.FC = () => {
                   href="/event#rewards"
                   className="text-gray-300 hover:text-white transition-colors block text-xs leading-snug"
                 >
-                  현장 즉석 당첨 및 온누리상품권 수령 안내
+                  디지털 보물찾기 1등 올리브영 3만원권(총 6명) &amp; 수령 안내
                 </Link>
                 <span className="text-[11px] text-gray-500 block mt-0.5">
-                  2026년 10월 28일
+                  2026. 11. 13 ~ 11. 14
                 </span>
               </div>
             </div>
@@ -57,22 +57,22 @@ export const Footer: React.FC = () => {
             </h2>
             <div className="flex flex-wrap gap-1.5 pt-1">
               {[
-                '보물찾기',
-                '발자국로드',
-                '40개QR',
-                '닭강정',
-                '화덕만두',
-                '쫄면',
-                '칼국수',
-                '푸성귀전',
-                '온누리',
+                { label: '닭강정', href: '/#food' },
+                { label: '공갈빵', href: '/#food' },
+                { label: '오색만두', href: '/#food' },
+                { label: '쫄면(광신제면)', href: '/#food' },
+                { label: '칼국수골목', href: '/#food' },
+                { label: 'K-관광마켓2회연속', href: '/#certifications' },
+                { label: '2025인천지역유산', href: '/#certifications' },
+                { label: '푸성귀전·100년역사', href: '/history' },
+                { label: '디지털보물찾기', href: '/event' },
               ].map((tag) => (
                 <Link
-                  key={tag}
-                  href="/#food"
+                  key={tag.label}
+                  href={tag.href}
                   className="px-2 py-1 bg-[#252525] hover:bg-[#333333] text-gray-400 hover:text-gray-200 text-[11px] rounded transition-colors"
                 >
-                  {tag}
+                  {tag.label}
                 </Link>
               ))}
             </div>

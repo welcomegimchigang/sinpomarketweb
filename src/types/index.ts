@@ -107,3 +107,34 @@ export interface FaqItem {
   answer: string;
 }
 
+export type ThemeCategory = 'PAST' | 'NOW' | 'FUTURE';
+
+export interface ThemeZoneInfo {
+  id: ThemeCategory;
+  qrLabel: string;
+  title: string;
+  subtitle: string;
+  location: string;
+  summary: string;
+  accentColor: string;
+  badgeBg: string;
+}
+
+export interface ThemeCard {
+  id: string;
+  theme: ThemeCategory;
+  code: string;
+  cardNumber: string;
+  title: string;
+  mainCopy: string;
+  body: string;
+  subContent?: string;
+  keywords: string[];
+  footerQuote: string;
+  designPoint: string;
+  recommendedImage?: string;
+  recommendedPosition?: string;
+  isExtra?: boolean;
+}
+
+

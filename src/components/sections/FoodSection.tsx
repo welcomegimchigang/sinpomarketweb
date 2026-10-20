@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Heart } from 'lucide-react';
+import { Heart, Sparkles, ArrowRight } from 'lucide-react';
 import { FoodCategory } from '../../types';
 
 interface StorePortfolioItem {
@@ -19,7 +19,7 @@ interface StorePortfolioItem {
 const PORTFOLIO_ITEMS: StorePortfolioItem[] = [
   {
     id: 'dakgangjeong',
-    name: '신포원조닭강정',
+    name: '신포 원조 닭강정',
     category: 'specialty',
     categoryLabel: '대표명물',
     quote: '“매콤달콤한 특제 양념과 가마솥 바삭함의 원조”',
@@ -30,35 +30,35 @@ const PORTFOLIO_ITEMS: StorePortfolioItem[] = [
   },
   {
     id: 'dumpling',
-    name: '산동화덕만두·공갈빵',
+    name: '오색만두 & 화덕만두·공갈빵',
     category: 'snack',
     categoryLabel: '별미간식',
-    quote: '“40년 전통 숯불 옹기 화덕에서 구워낸 담백한 풍미”',
+    quote: '“정성 가득한 오색만두와 숯불 옹기 화덕에서 구워낸 공갈빵”',
     imageUrl: 'https://images.unsplash.com/photo-1541696432-82c6da8ce7bf?auto=format&fit=crop&w=800&q=80',
     likes: 69,
-    tip: '화덕에서 갓 구워져 나왔을 때가 가장 바삭합니다.',
+    tip: '오색만두와 갓 구워낸 바삭한 공갈빵은 신포의 필수 별미입니다.',
     since: 'since 1978',
   },
   {
     id: 'jjolmyeon',
-    name: '신포우리쫄면·만두',
+    name: '원조 신포 쫄면 (광신제면 발상)',
     category: 'meal',
     categoryLabel: '식사/노포',
-    quote: '“쫄면의 발상지 인천의 자부심, 수제 튀김만두와의 조화”',
+    quote: '“1970년대 초 인천 중구 경동 광신제면에서 탄생한 국민 분식 쫄면의 고향”',
     imageUrl: 'https://images.unsplash.com/photo-1552611052-33e04de081de?auto=format&fit=crop&w=800&q=80',
     likes: 62,
-    tip: '매운 쫄면에 바삭한 튀김만두를 싸서 드셔보세요.',
-    since: 'since 1971',
+    tip: '우연히 뽑힌 굵은 면발에서 시작된 원조 쫄면과 만두의 조화!',
+    since: 'since 1970s',
   },
   {
     id: 'noodle',
-    name: '신포순대·맷돌칼국수',
+    name: '신포동 칼국수골목 & 찹쌀순대',
     category: 'meal',
     categoryLabel: '식사/노포',
-    quote: '“깊고 진한 사골 육수와 손으로 썬 쫄깃한 칼국수 면발”',
+    quote: '“시장 맞은편 칼국수골목의 진한 육수와 쫄깃한 손칼국수”',
     imageUrl: 'https://images.unsplash.com/photo-1617093727343-374698b1b08d?auto=format&fit=crop&w=800&q=80',
     likes: 63,
-    tip: '튀김 부스러기와 다진 양념을 국물에 풀어드세요.',
+    tip: '푸성귀전 조형물과 수선 골목 인근에서 따뜻한 한 그릇을 즐겨보세요.',
     since: 'since 1978',
   },
 ];
@@ -103,15 +103,13 @@ export const FoodSection: React.FC = () => {
             스토리마켓
           </h2>
           <p className="text-sm sm:text-base md:text-lg text-[#3d290c]/90 font-normal leading-relaxed">
-            수십년 동안 한우물을 파온 뚝심있는 가게들이 신포국제시장을 이루고 있습니다.
+            닭강정 · 공갈빵 · 오색만두 · 원조 쫄면까지, 오랜 시간 시장을 지켜온 상인들의 정성과 신포의 맛 이야기를 만나보세요.
           </p>
-          <div className="pt-2">
-            <a
-              href="#food"
-              className="inline-block px-7 py-2 rounded-full border border-[#3d290c] text-[#3d290c] text-sm font-semibold hover:bg-[#3d290c] hover:text-white transition-all duration-200"
-            >
-              스토리마켓 가기
-            </a>
+          <div className="flex flex-wrap items-center justify-center gap-2 pt-1 text-xs font-bold text-[#3d290c]">
+            <span className="bg-white/40 px-3 py-1 rounded-full">🍗 닭강정</span>
+            <span className="bg-white/40 px-3 py-1 rounded-full">🥖 공갈빵</span>
+            <span className="bg-white/40 px-3 py-1 rounded-full">🥟 오색만두</span>
+            <span className="bg-white/40 px-3 py-1 rounded-full">🍜 원조 쫄면</span>
           </div>
         </div>
       </div>
@@ -215,6 +213,50 @@ export const FoodSection: React.FC = () => {
               </div>
             );
           })}
+        </div>
+
+        {/* 4. 원조 쫄면 탄생 비화 (광신제면 스토리 박스) */}
+        <div className="mt-10 rounded-xl border border-[#8C6239]/25 bg-[#fff8ec] p-6 sm:p-8 shadow-sm">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+            <div className="space-y-2.5 max-w-3xl">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="inline-flex items-center gap-1 rounded bg-[#8C6239] px-2.5 py-0.5 text-[11px] font-bold text-white">
+                  <Sparkles className="w-3 h-3" />
+                  NOW FOOD STORY · 원조 탄생 비화
+                </span>
+                <span className="text-xs font-bold text-[#8C6239]">
+                  쫄면의 고향, 인천 중구
+                </span>
+              </div>
+              <h3 className="text-lg sm:text-xl font-black text-[#2a1b0e]">
+                전국에서 먹는 ‘쫄면’이 1970년대 초 인천 중구에서 태어났다는 사실, 알고 계셨나요?
+              </h3>
+              <p className="text-xs sm:text-sm text-[#5b4a38] leading-relaxed">
+                쫄면은 <strong>1970년대 초 인천 중구 경동의 ‘광신제면’</strong>에서 시작된 것으로 알려져 있습니다. 냉면을 만들던 과정에서 실수로 평소보다 굵은 면발이 뽑혔고, 이 면을 버리지 않고 인근 분식점에 나누어 주어 채소와 매콤달콤한 고추장 양념에 비벼 판매하면서 오늘날 대한민국 국민 분식 ‘쫄면’이 탄생했습니다.
+              </p>
+              <p className="text-xs font-semibold text-[#8C6239] italic pt-1">
+                “우연히 태어난 한 가닥의 면이, 대한민국의 국민 분식이 되었습니다.”
+              </p>
+            </div>
+
+            {/* Flow Steps */}
+            <div className="flex flex-col gap-2 shrink-0 bg-white/90 border border-[#8C6239]/20 rounded-lg p-4 text-xs">
+              <span className="text-[11px] font-bold text-[#8C6239] uppercase tracking-wider mb-1">
+                ORIGIN OF JJOLMYEON (1970s)
+              </span>
+              {[
+                '1. 1970년대 초 인천 중구 경동 광신제면',
+                '2. 냉면 제조 중 실수로 굵은 면발 탄생',
+                '3. 인근 분식점에서 채소·매콤한 양념 결합',
+                '4. 대한민국 국민 분식 ‘쫄면’으로 전국 확산',
+              ].map((step, i) => (
+                <div key={i} className="flex items-center gap-2 text-gray-700 font-medium">
+                  <ArrowRight className="w-3.5 h-3.5 text-[#E5A93C] shrink-0" />
+                  <span>{step}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>

@@ -6,14 +6,30 @@ import { usePathname } from 'next/navigation';
 import { Search, Menu, X } from 'lucide-react';
 
 const MAIN_LINKS = [
-  { href: '/', label: '시장소개', mobileLabel: '시장소개' },
-  { href: '/#food', label: '스토리마켓', mobileLabel: '스토리마켓 (신포 먹거리)' },
-  { href: '/#history', label: '100년역사', mobileLabel: '100년 역사' },
-  { href: '/#location', label: '오시는길', mobileLabel: '오시는 길 & 주차안내' },
-  { href: '/#faq', label: '이용안내', mobileLabel: '이용안내 & FAQ' },
+  { href: '/', label: '현재 시장안내', mobileLabel: '현재 시장안내 (홈)' },
+  { href: '/#certifications', label: '공식인증·유산', mobileLabel: '인천지역유산 & K-관광마켓' },
+  { href: '/#food', label: '스토리마켓', mobileLabel: '스토리마켓 (4대 먹거리)' },
+  { href: '/#location', label: '오시는길·주차', mobileLabel: '오시는 길 & 주차안내' },
+  { href: '/#faq', label: '이용FAQ', mobileLabel: '시장 이용 FAQ' },
 ];
 
-const EVENT_LINK = { href: '/event', label: '디지털 보물찾기', mobileLabel: '디지털 보물찾기 (이벤트)' };
+const HISTORY_LINK = {
+  href: '/history',
+  label: '100년 역사관',
+  mobileLabel: '신포 100년 역사관 (과거·테마카드)',
+};
+
+const EVENT_LINK = {
+  href: '/event',
+  label: '디지털 보물찾기',
+  mobileLabel: '디지털 보물찾기 (이벤트)',
+};
+
+const HISTORY_SUB_LINKS = [
+  { href: '#overview', label: '역사관 소개' },
+  { href: '#history', label: '공설시장 100년 타임라인' },
+  { href: '#theme-cards', label: '工자형 3대 테마 카드 (15선)' },
+];
 
 const EVENT_SUB_LINKS = [
   { href: '#about', label: '행사개요' },
@@ -32,6 +48,7 @@ export const Navbar: React.FC = () => {
   const rawPath = usePathname() || '/';
   const pathname = rawPath.length > 1 ? rawPath.replace(/\/$/, '') : rawPath;
   const isEventPage = pathname === '/event';
+  const isHistoryPage = pathname === '/history';
   const isHomePage = pathname === '/';
 
   const closeMenu = () => setIsOpen(false);
@@ -56,14 +73,16 @@ export const Navbar: React.FC = () => {
           <span className="text-[11px] text-gray-500 font-semibold tracking-wider mt-1 text-center">
             {isEventPage
               ? '디지털 보물찾기 : 발자국 따라 떠나는 신포 골목 탐험 • 2026. 11. 13(금) ~ 11. 14(토)'
-              : '1883년부터 이어온 인천의 맛과 정 • 140년 전통의 대표 시장'}
+              : isHistoryPage
+              ? '1883 푸성귀전에서 1929 공설시장까지 • 한 권의 책으로 읽는 신포 100년 역사관'
+              : '2025 인천지역유산 • 2023·2026 K-관광마켓 10선 2회 연속 선정'}
           </span>
         </div>
 
         {/* Navigation & Utilities Row */}
         <div className="py-2.5 flex items-center justify-between">
           {/* Desktop Navigation Links */}
-          <nav className="hidden md:flex items-center gap-7 text-[14px] font-medium text-[#444444]">
+          <nav className="hidden md:flex items-center gap-5 text-[14px] font-medium text-[#444444]">
             {MAIN_LINKS.map((link) => {
               const active = link.href === '/' && isHomePage;
               return (
@@ -78,6 +97,20 @@ export const Navbar: React.FC = () => {
                 </Link>
               );
             })}
+
+            {/* Page 2: 100년 역사관 (/history) */}
+            <Link
+              href={HISTORY_LINK.href}
+              className={`px-3 py-1 rounded-full border transition-colors font-bold ${
+                isHistoryPage
+                  ? 'bg-[#8C6239] text-white border-[#8C6239]'
+                  : 'text-[#8C6239] border-[#8C6239] hover:bg-[#8C6239] hover:text-white'
+              }`}
+            >
+              {HISTORY_LINK.label}
+            </Link>
+
+            {/* Page 3: 디지털 보물찾기 (/event) */}
             <Link
               href={EVENT_LINK.href}
               className={`px-3 py-1 rounded-full border transition-colors font-bold ${
@@ -126,9 +159,15 @@ export const Navbar: React.FC = () => {
 
           {/* Mobile Bar */}
           <div className="flex md:hidden items-center justify-between w-full">
-            <Link href="/event" onClick={closeMenu} className="text-xs font-bold text-[#8C6239]">
-              11.13~11.14 디지털 보물찾기
-            </Link>
+            <div className="flex items-center gap-3">
+              <Link href="/history" onClick={closeMenu} className="text-xs font-bold text-[#8C6239]">
+                100년 역사관
+              </Link>
+              <span className="text-gray-300">|</span>
+              <Link href="/event" onClick={closeMenu} className="text-xs font-bold text-[#00acc1]">
+                디지털 보물찾기
+              </Link>
+            </div>
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setIsOpen(!isOpen)}
@@ -142,6 +181,24 @@ export const Navbar: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* History Sub Navigation (역사 페이지에서만 노출) */}
+      {isHistoryPage && (
+        <div className="border-t border-gray-100 bg-[#fcfaf7]">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 flex items-center gap-5 overflow-x-auto py-2 text-xs font-medium text-gray-600 whitespace-nowrap">
+            <span className="text-[#8C6239] font-bold shrink-0">HISTORY</span>
+            {HISTORY_SUB_LINKS.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="hover:text-[#8C6239] transition-colors shrink-0"
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Event Sub Navigation (이벤트 페이지에서만 노출) */}
       {isEventPage && (
@@ -176,6 +233,13 @@ export const Navbar: React.FC = () => {
               {link.mobileLabel}
             </Link>
           ))}
+          <Link
+            href={HISTORY_LINK.href}
+            onClick={closeMenu}
+            className="block py-2 text-[#8C6239] font-bold"
+          >
+            {HISTORY_LINK.mobileLabel}
+          </Link>
           <Link
             href={EVENT_LINK.href}
             onClick={closeMenu}

@@ -73,7 +73,7 @@ export const LocationSection: React.FC = () => {
                 </span>
                 <ul className="space-y-1.5 text-gray-600 leading-relaxed">
                   <li>
-                    • <strong className="text-gray-800">수인분당선 [신포역] 3번 출구</strong>: 도보 5분 (약 350m, 추천 경로)
+                    • <strong className="text-gray-800">수인분당선 [신포역] 4번 출구</strong>: 도보 약 3분 (가장 빠른 추천 경로)
                   </li>
                   <li>
                     • <strong className="text-gray-800">1호선 [동인천역] 2번 출구</strong>: 지하상가 연결 도보 10분 (약 600m)
@@ -86,7 +86,7 @@ export const LocationSection: React.FC = () => {
                   시내버스
                 </span>
                 <p className="text-gray-600 leading-relaxed">
-                  • <strong className="text-gray-800">'신포시장' 정류장</strong> 하차: 간선 12, 24, 28, 45, 72, 307번
+                  • <strong className="text-gray-800">&apos;신포시장&apos; 정류장</strong> 하차: 간선 12, 24, 28, 45, 72, 307번
                 </p>
                 <p className="text-gray-600 leading-relaxed mt-1">
                   • 신포순환버스 및 지선 517, 521번
@@ -105,15 +105,23 @@ export const LocationSection: React.FC = () => {
             <div className="space-y-3.5 text-xs">
               {PARKING_INFO.map((parking, pIdx) => (
                 <div key={pIdx} className="bg-gray-50 p-3.5 rounded border border-gray-200/80">
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="font-bold text-gray-900 text-sm">{parking.name}</span>
-                    <span className="text-[11px] text-[#8C6239] font-medium">{parking.distance}</span>
+                  <div className="flex flex-wrap items-center justify-between gap-1 mb-1">
+                    <div className="flex items-center gap-2">
+                      <span className="font-bold text-gray-900 text-sm">{parking.name}</span>
+                      {parking.capacity && (
+                        <span className="text-[11px] bg-amber-100/80 text-[#8C6239] px-1.5 py-0.5 rounded font-semibold">
+                          {parking.capacity}
+                        </span>
+                      )}
+                    </div>
+                    <span className="text-[11px] text-[#8C6239] font-bold">{parking.distance}</span>
                   </div>
-                  <p className="text-gray-600 mb-1">
-                    <strong className="text-gray-700">요금:</strong> {parking.feeInfo}
+                  <p className="text-gray-700 mb-1">
+                    <strong className="text-gray-900">요금:</strong>{' '}
+                    <span className="font-semibold text-[#8C6239]">{parking.feeInfo}</span>
                   </p>
                   <p className="text-gray-500 text-[11px]">
-                    <strong className="text-gray-600">혜택:</strong> {parking.benefit}
+                    <strong className="text-gray-600">특징:</strong> {parking.benefit}
                   </p>
                 </div>
               ))}
