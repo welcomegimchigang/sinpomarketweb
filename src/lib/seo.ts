@@ -11,7 +11,7 @@ export const EVENT_OG_IMAGE = `${SITE_URL}/og-event.png`;
 
 // [검색엔진 소유권 확인 코드 및 애널리틱스 ID]
 export const GOOGLE_SITE_VERIFICATION = ''; // 구글 서치 콘솔 인증 코드 (예: 'abc123xyz...')
-export const NAVER_SITE_VERIFICATION = '6ac094598822720276ba91e808c62223a51d3879'; // 네이버 서치어드바이저 인증 코드
+export const NAVER_SITE_VERIFICATION = '8652f10ba07f300b5bc044f8e1a75520'; // 네이버 서치어드바이저 인증 코드
 export const GA_MEASUREMENT_ID = 'G-XJ2RH8ENVC'; // 구글 애널리틱스 4 (GA4) 측정 ID
 
 interface PageSeoParams {

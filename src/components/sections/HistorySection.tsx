@@ -843,9 +843,9 @@ export const HistorySection: React.FC = () => {
                 </p>
 
                 <div className="rounded-lg bg-black/35 border border-[#E5A93C]/30 p-3 text-[11px] text-amber-200/90 space-y-1 max-w-xs mx-auto">
-                  <p className="font-bold text-[#E5A93C]">👇 아래 이어지는 15개 테마 카드</p>
+                  <p className="font-bold text-[#E5A93C]">👇 아래 이어지는 20개 테마 카드</p>
                   <p className="text-[10px] text-amber-100/75">
-                    시장 골목 QR코드에 담긴 과거·현재·미래 15편의 상세 카드 이야기도 아래에서 함께 읽어보세요.
+                    시장 골목 QR코드에 담긴 과거·현재·미래 20편의 상세 카드 이야기도 아래에서 함께 읽어보세요.
                   </p>
                 </div>
               </div>

@@ -28,7 +28,7 @@ const EVENT_LINK = {
 const HISTORY_SUB_LINKS = [
   { href: '#overview', label: '역사관 소개' },
   { href: '#history', label: '공설시장 100년 타임라인' },
-  { href: '#theme-cards', label: '工자형 3대 테마 카드 (15선)' },
+  { href: '#theme-cards', label: '工자형 3대 테마 카드 (20선)' },
 ];
 
 const EVENT_SUB_LINKS = [

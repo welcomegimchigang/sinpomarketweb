@@ -3,7 +3,7 @@ import { FESTIVAL_INFO } from '../../data/marketData';
 
 export const EventStats: React.FC = () => {
   const stats = [
-    { value: String(FESTIVAL_INFO.qrCount), unit: '개', label: '골목에 숨은 QR코드' },
+    { value: String(FESTIVAL_INFO.qrCount), unit: '개', label: '골목에 숨은 20개 QR코드' },
     { value: '2', unit: '일', label: '11.13(금) ~ 11.14(토)' },
     { value: '즉석', unit: '추첨', label: '대기 없는 QR 실시간 당첨' },
     { value: '100', unit: '%', label: '꽝 없는 스토리텔링' },

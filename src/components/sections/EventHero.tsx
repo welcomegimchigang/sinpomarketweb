@@ -59,7 +59,7 @@ export const EventHero: React.FC = () => {
           <p className="max-w-xl text-sm leading-relaxed text-gray-300 sm:text-base break-keep">
             바닥에 숨겨진 발자국을 따라 걷다 보면 어느새 시장 구석구석!
             <br className="hidden sm:inline" />{' '}
-            골목 곳곳 {FESTIVAL_INFO.qrCount}개의 QR코드를 찾아 온누리상품권과 푸짐한 경품을 받아가세요.
+            골목 곳곳 {FESTIVAL_INFO.qrCount}개의 QR코드를 찾아 올리브영 3만원권, 다이소 1만원권 등 푸짐한 경품을 받아가세요.
           </p>
 
           <EventCountdown />

@@ -16,8 +16,8 @@ export const EventBanner: React.FC = () => {
               {FESTIVAL_INFO.name}
             </h2>
             <p className="text-sm sm:text-base text-white/90 max-w-xl">
-              {FESTIVAL_INFO.subTitle}. 골목 곳곳에 숨은 QR코드 {FESTIVAL_INFO.qrCount}개를 찾고
-              온누리상품권과 경품을 받아가세요.
+              {FESTIVAL_INFO.subTitle}. 골목 곳곳에 숨은 QR코드 20개를 찾고
+              올리브영 3만원권, 다이소 1만원권, 인천대학교 기념 노트 등 경품을 받아가세요.
             </p>
             <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 text-xs text-white/90 pt-1">
               <span className="flex items-center gap-1.5">

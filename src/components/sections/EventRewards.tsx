@@ -25,7 +25,7 @@ const INSTANT_SYSTEM = [
 const CLAIM_STEPS = [
   "스마트폰으로 QR 스캔 후 화면을 아래로 스크롤해 '모바일 당첨 화면'을 열어둡니다.",
   '신포국제시장 지원센터(고객지원센터) 앞 리워드 부스 스태프에게 당첨 화면을 제시합니다.',
-  '1등 올리브영 3만원권(총 6명)을 비롯한 당첨 경품을 현장에서 즉시 수령합니다.',
+  '1등 올리브영 3만원권(총 6명), 2등 다이소 1만원권(총 10명), 참가상 인천대학교 기념 노트(총 80권 선착순) 등 경품을 현장에서 즉시 수령합니다.',
 ];
 
 export const EventRewards: React.FC = () => {
@@ -40,12 +40,12 @@ export const EventRewards: React.FC = () => {
             풍성한 <span className="text-[#8C6239]">보물 경품</span>
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-sm text-[#6b5640]">
-            모바일 당첨 화면을 신포국제시장 지원센터(고객지원센터) 앞 리워드 부스에 제시하시면 즉시 수령할 수 있습니다.
+            1등 올리브영 3만원권(총 6명), 2등 다이소 1만원권(총 10명), 참가상 인천대학교 기념 노트(총 80권)! 모바일 당첨 화면을 신포국제시장 지원센터(고객지원센터) 앞 리워드 부스에 제시하시면 즉시 수령할 수 있습니다.
           </p>
         </div>
 
         {/* ticket cards */}
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {REWARD_TIERS.map((tier, idx) => {
             const Icon = iconMap[tier.icon as keyof typeof iconMap] || Gift;
             const featured = idx === 0;

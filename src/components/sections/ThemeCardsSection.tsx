@@ -20,30 +20,30 @@ import {
 import { THEME_ZONES, THEME_CARDS } from '../../data/marketData';
 import { ThemeCard, ThemeCategory, ThemeZoneInfo } from '../../types';
 
-// 총 22페이지 구성 (짝수 페이지로 구성하여 showCover: true 시 앞표지[0]와 뒷표지[21]가 각각 단독 하드커버로 동작)
+// 총 27페이지 구성
 // 0: 앞표지 ("신포국제시장 100년 여행 가이드")
 // 1: 목차 Left (工자형 공간 안내 & Chapter 1 목차)
 // 2: 목차 Right (Chapter 2 & Chapter 3 목차)
 // 3: Chapter 1 간지 (과거의 신포)
-// 4~5: PAST 01 ~ PAST 02 (2장)
-// 6: Chapter 2 간지 (오늘의 신포)
-// 7~13: NOW 01 ~ NOW 07 (7장: 기본 5 + 추가 2)
-// 14: Chapter 3 간지 (미래의 신포)
-// 15~20: FUTURE 01 ~ FUTURE 06 (6장: 기본 5 + 추가 1)
-// 21: 뒷표지 (마무리 문구 + 디지털 보물찾기 버튼)
-const TOTAL_PAGES = 22;
+// 4~7: PAST 01 ~ PAST 04 (4장: 스토리 2 + 퀴즈 2)
+// 8: Chapter 2 간지 (오늘의 신포)
+// 9~17: NOW 01 ~ NOW 09 (9장: 스토리 7 + 퀴즈 2)
+// 18: Chapter 3 간지 (미래의 신포)
+// 19~25: FUTURE 01 ~ FUTURE 07 (7장: 스토리 6 + 퀴즈 1)
+// 26: 뒷표지 (마무리 문구 + 디지털 보물찾기 버튼)
+const TOTAL_PAGES = 27;
 
 const PAGE_INDEX = {
   COVER: 0,
   TOC_LEFT: 1,
   TOC_RIGHT: 2,
   CH1_DIVIDER: 3,
-  PAST_START: 4, // 4..5
-  CH2_DIVIDER: 6,
-  NOW_START: 7, // 7..13
-  CH3_DIVIDER: 14,
-  FUTURE_START: 15, // 15..20
-  BACK_COVER: 21,
+  PAST_START: 4, // 4..7
+  CH2_DIVIDER: 8,
+  NOW_START: 9, // 9..17
+  CH3_DIVIDER: 18,
+  FUTURE_START: 19, // 19..25
+  BACK_COVER: 26,
 } as const;
 
 interface EnrichedGuidePage {
@@ -556,7 +556,7 @@ export const ThemeCardsSection: React.FC = () => {
             </div>
 
             {/* 3. 본문 설명 (body 원문 그대로) */}
-            <p className="text-[11.5px] sm:text-[13px] text-[#3a2818] leading-relaxed mb-3 break-keep">
+            <p className="text-[11.5px] sm:text-[13px] text-[#3a2818] leading-relaxed mb-3 break-keep whitespace-pre-line">
               {card.body}
             </p>
 
@@ -682,7 +682,7 @@ export const ThemeCardsSection: React.FC = () => {
           <div className="w-12 h-[2px] bg-[#8C6239] mx-auto mt-3 mb-3" />
           <p className="text-xs sm:text-sm text-[#5c4328] max-w-2xl mx-auto leading-relaxed break-keep">
             신포국제시장의 <strong>工(공)자형 공간 구조</strong>에 맞춰 배치된{' '}
-            <strong>과거(PAST 01~02) · 오늘(NOW 01~07) · 미래(FUTURE 01~06) 15개 스토리</strong>를
+            <strong>과거(PAST 01~04) · 오늘(NOW 01~09) · 미래(FUTURE 01~07) 20개 스토리 &amp; 퀴즈</strong>를
             여행 가이드북으로 엮었습니다. 책 옆면의 인덱스 탭이나 목차를 눌러 원하는 페이지로 바로 이동해보세요.
           </p>
         </div>
@@ -719,7 +719,7 @@ export const ThemeCardsSection: React.FC = () => {
                 activeSection === 'PAST' ? THEME_META.PAST.tabBgActive : THEME_META.PAST.tabBgIdle
               }`}
             >
-              PAST (2)
+              PAST ({pastPages.length})
             </button>
             <button
               type="button"
@@ -728,7 +728,7 @@ export const ThemeCardsSection: React.FC = () => {
                 activeSection === 'NOW' ? THEME_META.NOW.tabBgActive : THEME_META.NOW.tabBgIdle
               }`}
             >
-              NOW (7)
+              NOW ({nowPages.length})
             </button>
             <button
               type="button"
@@ -739,7 +739,7 @@ export const ThemeCardsSection: React.FC = () => {
                   : THEME_META.FUTURE.tabBgIdle
               }`}
             >
-              FUTURE (6)
+              FUTURE ({futurePages.length})
             </button>
             <button
               type="button"
@@ -859,7 +859,7 @@ export const ThemeCardsSection: React.FC = () => {
               }`}
             >
               <span className="block text-[9px] font-mono font-bold uppercase tracking-wider">
-                CH.1 · PAST (01–02)
+                CH.1 · PAST (01–04)
               </span>
               <span className="block text-xs font-black">과거의 신포</span>
               <span className="block text-[10px] opacity-80">푸성귀전 · 세로길 우측</span>
@@ -875,7 +875,7 @@ export const ThemeCardsSection: React.FC = () => {
               }`}
             >
               <span className="block text-[9px] font-mono font-bold uppercase tracking-wider">
-                CH.2 · NOW (01–07)
+                CH.2 · NOW (01–09)
               </span>
               <span className="block text-xs font-black">오늘의 신포</span>
               <span className="block text-[10px] opacity-80">메인시장 윗길·아랫길</span>
@@ -891,7 +891,7 @@ export const ThemeCardsSection: React.FC = () => {
               }`}
             >
               <span className="block text-[9px] font-mono font-bold uppercase tracking-wider">
-                CH.3 · FUTURE (01–06)
+                CH.3 · FUTURE (01–07)
               </span>
               <span className="block text-xs font-black">미래의 신포</span>
               <span className="block text-[10px] opacity-80">등대공원 · 세로길 좌측</span>
@@ -979,7 +979,7 @@ export const ThemeCardsSection: React.FC = () => {
               <div className="my-auto py-4 text-center">
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E5A93C]/20 border border-[#E5A93C]/50 text-[#E5A93C] text-[11px] font-extrabold mb-4">
                   <QrCode className="w-3.5 h-3.5" />
-                  工자형 골목 따라 만나는 3대 테마 15선
+                  工자형 골목 따라 만나는 3대 테마 20선
                 </div>
 
                 <h3 className="text-2xl sm:text-4xl font-black tracking-tight font-storybook text-[#fcf5e5] leading-tight mb-3">
@@ -1001,21 +1001,21 @@ export const ThemeCardsSection: React.FC = () => {
                       CHAPTER 1
                     </span>
                     <span className="block text-xs font-black text-white mt-0.5">과거의 신포</span>
-                    <span className="block text-[10px] text-amber-100/75 mt-0.5">PAST 01~02</span>
+                    <span className="block text-[10px] text-amber-100/75 mt-0.5">PAST 01~04</span>
                   </div>
                   <div className="rounded-lg bg-white/10 border border-white/15 p-2.5">
                     <span className="block text-[9px] font-mono font-bold text-[#E5A93C]">
                       CHAPTER 2
                     </span>
                     <span className="block text-xs font-black text-white mt-0.5">오늘의 신포</span>
-                    <span className="block text-[10px] text-amber-100/75 mt-0.5">NOW 01~07</span>
+                    <span className="block text-[10px] text-amber-100/75 mt-0.5">NOW 01~09</span>
                   </div>
                   <div className="rounded-lg bg-white/10 border border-white/15 p-2.5">
                     <span className="block text-[9px] font-mono font-bold text-[#4dd0e1]">
                       CHAPTER 3
                     </span>
                     <span className="block text-xs font-black text-white mt-0.5">미래의 신포</span>
-                    <span className="block text-[10px] text-amber-100/75 mt-0.5">FUTURE 01~06</span>
+                    <span className="block text-[10px] text-amber-100/75 mt-0.5">FUTURE 01~07</span>
                   </div>
                 </div>
               </div>

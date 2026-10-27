@@ -8,7 +8,7 @@ import { buildPageMetadata, DEFAULT_OG_IMAGE } from '../../lib/seo';
 
 const HISTORY_TITLE = '신포국제시장 100년 역사 이야기 | 1883 푸성귀전부터 工자형 3대 테마까지';
 const HISTORY_DESCRIPTION =
-  '1883년 개항기 어물전·푸성귀전에서 1929년 제1공설시장 개장, 1971년 신포상가 신축, 2010년 신포국제시장 도약까지! 동화책을 넘기듯 만나보는 신포 100년의 역사와 工자형 골목 15개 스토리 아카이브입니다.';
+  '1883년 개항기 어물전·푸성귀전에서 1929년 제1공설시장 개장, 1971년 신포상가 신축, 2010년 신포국제시장 도약까지! 동화책을 넘기듯 만나보는 신포 100년의 역사와 工자형 골목 20개 스토리 & 퀴즈 아카이브입니다.';
 
 export const metadata: Metadata = buildPageMetadata({
   title: HISTORY_TITLE,
@@ -57,7 +57,7 @@ export default function HistoryPage() {
               href="#theme-cards"
               className="px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/25 text-white text-sm font-bold rounded transition-colors"
             >
-              工자형 3대 테마 15개 카드 읽기
+              工자형 3대 테마 20개 테마 카드 읽기
             </a>
           </div>
         </div>
@@ -66,7 +66,7 @@ export default function HistoryPage() {
       {/* 100년 연혁 & 시대별 스토리 */}
       <HistorySection />
 
-      {/* 工자형 3대 테마 (과거·현재·미래) 15개 카드 아카이브 */}
+      {/* 工자형 3대 테마 (과거·현재·미래) 20개 테마 카드 아카이브 */}
       <ThemeCardsSection />
 
       {/* 하단 브릿지 CTA: 현재 홍보 홈(/) & 디지털 보물찾기(/event) 이동 */}

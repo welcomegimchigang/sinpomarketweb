@@ -30,7 +30,7 @@ export const Footer: React.FC = () => {
                   href="/history"
                   className="text-gray-300 hover:text-white transition-colors block text-xs leading-snug"
                 >
-                  신포 100년 역사관 &amp; 工자형 골목 15개 테마 카드 아카이브
+                  신포 100년 역사관 &amp; 工자형 골목 20개 테마 &amp; 퀴즈 아카이브
                 </Link>
                 <span className="text-[11px] text-gray-500 block mt-0.5">
                   100년 역사 홍보관
@@ -41,7 +41,7 @@ export const Footer: React.FC = () => {
                   href="/event#rewards"
                   className="text-gray-300 hover:text-white transition-colors block text-xs leading-snug"
                 >
-                  디지털 보물찾기 1등 올리브영 3만원권(총 6명) &amp; 수령 안내
+                  디지털 보물찾기 1등 올리브영 3만원권(총 6명), 2등 다이소 1만원권(총 10명), 참가상 인천대 노트 80권 &amp; 수령 안내
                 </Link>
                 <span className="text-[11px] text-gray-500 block mt-0.5">
                   2026. 11. 13 ~ 11. 14
