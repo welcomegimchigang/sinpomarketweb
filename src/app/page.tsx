@@ -7,6 +7,7 @@ import { EventBanner } from '../components/sections/EventBanner';
 import { FoodSection } from '../components/sections/FoodSection';
 import { LocationSection } from '../components/sections/LocationSection';
 import { MarketFaq } from '../components/sections/MarketFaq';
+import { QuizDemoModal } from '../components/ui/QuizDemoModal';
 import { buildPageMetadata, DEFAULT_OG_IMAGE } from '../lib/seo';
 import { MARKET_FAQ_ITEMS } from '../data/marketData';
 
@@ -47,6 +48,7 @@ export default function Home() {
       <EventBanner />
       <LocationSection />
       <MarketFaq />
+      <QuizDemoModal />
     </>
   );
 }
