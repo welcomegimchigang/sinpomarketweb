@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Search, Menu, X } from 'lucide-react';
+import { BookOpen, Menu, X } from 'lucide-react';
 
 const MAIN_LINKS = [
   { href: '/', label: '현재 시장안내', mobileLabel: '현재 시장안내 (홈)' },
@@ -42,8 +42,6 @@ const EVENT_SUB_LINKS = [
 
 export const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
 
   const rawPath = usePathname() || '/';
   const pathname = rawPath.length > 1 ? rawPath.replace(/\/$/, '') : rawPath;
@@ -72,10 +70,10 @@ export const Navbar: React.FC = () => {
           </Link>
           <span className="text-[11px] text-gray-500 font-semibold tracking-wider mt-1 text-center">
             {isEventPage
-              ? '디지털 보물찾기 : 발자국 따라 떠나는 신포 골목 탐험 • 2026. 11. 13(금) ~ 11. 14(토)'
+              ? '2026 신포국제시장 디지털 보물찾기 • 인천대 신포터즈 기획·운영 (11.13 ~ 11.14)'
               : isHistoryPage
               ? '1883 푸성귀전에서 1929 공설시장까지 • 한 권의 책으로 읽는 신포 100년 역사관'
-              : '2025 인천지역유산 • 2023·2026 K-관광마켓 10선 2회 연속 선정'}
+              : '2025 인천지역유산 • 2023·2026 K-관광마켓 1·2기 연속 선정 • 인천대 신포터즈 운영'}
           </span>
         </div>
 
@@ -123,38 +121,16 @@ export const Navbar: React.FC = () => {
             </Link>
           </nav>
 
-          {/* Right Area: Search */}
-          <div className="hidden md:flex items-center gap-4 text-gray-600">
-            <div className="relative">
-              {searchOpen ? (
-                <div className="flex items-center gap-2">
-                  <input
-                    type="text"
-                    placeholder="보물찾기 힌트 검색..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="text-xs px-2.5 py-1 border border-gray-300 rounded focus:outline-none focus:border-[#8C6239]"
-                    autoFocus
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setSearchOpen(false)}
-                    className="text-xs text-gray-400 hover:text-gray-700"
-                  >
-                    닫기
-                  </button>
-                </div>
-              ) : (
-                <button
-                  type="button"
-                  onClick={() => setSearchOpen(true)}
-                  className="p-1 hover:text-[#8C6239] transition-colors"
-                  aria-label="검색창 열기"
-                >
-                  <Search className="w-4 h-4 text-gray-500 hover:text-[#8C6239]" />
-                </button>
-              )}
-            </div>
+          {/* Right Area: Guidebook Hint Shortcut */}
+          <div className="hidden md:flex items-center gap-3 text-gray-600">
+            <Link
+              href="/history#theme-cards"
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-[#8C6239] bg-[#fcfaf7] hover:bg-[#f3ead8] border border-[#8C6239]/30 px-3 py-1.5 rounded-full transition-colors"
+              title="보물찾기 힌트가 담긴 여행 가이드북 보기"
+            >
+              <BookOpen className="w-3.5 h-3.5" />
+              <span>보물찾기 힌트북</span>
+            </Link>
           </div>
 
           {/* Mobile Bar */}

@@ -492,6 +492,8 @@ export const ThemeCardsSection: React.FC = () => {
     const { card, pageIndex, pageNumber, guideHeaderCode, chapterTitle } = item;
     const isLeft = pageIndex % 2 === 1;
     const meta = THEME_META[card.theme];
+    const zoneInfo = THEME_ZONES.find((z) => z.id === card.theme);
+    const isQuizCard = card.code.startsWith('QUIZ');
     const flowData = card.subContent ? parseStoryFlowNodes(card.subContent) : null;
 
     return (
@@ -509,7 +511,7 @@ export const ThemeCardsSection: React.FC = () => {
           />
 
           <div>
-            {/* 1. 상단 가이드북식 머리말 ("PAST 01 · 과거의 신포" 등 + 원본 코드/카드번호 보존) */}
+            {/* 1. 상단 가이드북식 머리말 ("PAST 01 · 과거의 신포" 등) */}
             <div
               className={`flex items-center justify-between gap-1.5 pb-2.5 mb-3 border-b-2 ${meta.headerBorder}`}
             >
@@ -519,23 +521,15 @@ export const ThemeCardsSection: React.FC = () => {
                 >
                   {guideHeaderCode} · {chapterTitle}
                 </span>
-                {card.code !== guideHeaderCode && (
-                  <span className="px-1.5 py-0.5 rounded bg-[#2a1b0e]/10 text-[#2a1b0e] text-[9px] sm:text-[10px] font-mono font-bold shrink-0">
-                    {card.code}
-                  </span>
-                )}
+                <span className="px-1.5 py-0.5 rounded bg-[#2a1b0e]/10 text-[#2a1b0e] text-[9px] sm:text-[10px] font-bold shrink-0">
+                  {isQuizCard ? '현장 QR 퀴즈' : '골목 스토리'}
+                </span>
               </div>
 
               <div className="flex items-center gap-1.5 shrink-0">
-                <span className="text-[10px] sm:text-[11px] font-extrabold text-[#5c3d1e]">
+                <span className="text-[10px] sm:text-[11px] font-mono font-extrabold text-[#5c3d1e]">
                   {card.cardNumber}
                 </span>
-                {card.isExtra && (
-                  <span className="inline-flex items-center gap-0.5 rounded-full bg-amber-100 border border-amber-300 px-1.5 py-0.5 text-[9px] font-extrabold text-[#8C6239]">
-                    <Sparkles className="w-2.5 h-2.5" />
-                    추가
-                  </span>
-                )}
               </div>
             </div>
 
@@ -626,10 +620,10 @@ export const ThemeCardsSection: React.FC = () => {
             </div>
           </div>
 
-          {/* 6. 하단 여백 마스킹테이프 & 손글씨 메모 스타일 박스 (footerQuote + designPoint + recommendedPosition) */}
+          {/* 6. 하단 여백 마스킹테이프 & 여행자 노트 한 줄 문구 (footerQuote + 탐험 구역 안내) */}
           <div className="pt-2">
             <div className={`relative rounded-xl border p-2.5 sm:p-3 ${meta.memoBg} shadow-sm`}>
-              {/* 마스킹 테이프 장식 (내용 없는 순수 시각 장식) */}
+              {/* 마스킹 테이프 장식 */}
               <div
                 aria-hidden="true"
                 className="guidebook-masking-tape pointer-events-none absolute -top-2 left-1/2 -translate-x-1/2 w-20 h-4 -rotate-2 rounded-sm"
@@ -639,17 +633,17 @@ export const ThemeCardsSection: React.FC = () => {
                 “{card.footerQuote}”
               </p>
 
-              <div className="flex items-center justify-between gap-2 pt-1.5 border-t border-dashed border-[#8C6239]/25 text-[9.5px] sm:text-[10.5px] text-[#6e5236]">
-                <span className="flex items-center gap-1 truncate" title={card.designPoint}>
-                  <Layers className="w-3 h-3 shrink-0 text-[#8C6239]" />
-                  <span className="truncate">포인트: {card.designPoint}</span>
-                </span>
-                {card.recommendedPosition && (
-                  <span className="shrink-0 font-bold text-[#8C6239]">
-                    [{card.recommendedPosition}]
+              {zoneInfo && (
+                <div className="flex items-center justify-between gap-2 pt-1.5 border-t border-dashed border-[#8C6239]/25 text-[9.5px] sm:text-[10.5px] text-[#6e5236]">
+                  <span className="flex items-center gap-1 truncate">
+                    <MapPin className="w-3 h-3 shrink-0 text-[#8C6239]" />
+                    <span className="truncate">탐험 구역: {zoneInfo.location}</span>
                   </span>
-                )}
-              </div>
+                  <span className="shrink-0 font-bold text-[#8C6239]">
+                    {zoneInfo.qrLabel}
+                  </span>
+                </div>
+              )}
             </div>
 
             {/* 페이지 하단 번호 */}
@@ -968,7 +962,7 @@ export const ThemeCardsSection: React.FC = () => {
               <div className="flex items-center justify-between border-b border-amber-200/25 pb-3">
                 <span className="inline-flex items-center gap-1.5 text-[10px] sm:text-xs font-mono font-bold tracking-widest text-[#E5A93C] uppercase">
                   <Compass className="w-4 h-4" />
-                  OFFICIAL MARKET GUIDEBOOK
+                  SINPO ALLEY TRAVEL GUIDEBOOK
                 </span>
                 <span className="px-2 py-0.5 rounded border border-amber-300/40 text-[10px] font-mono text-amber-200">
                   PAST · NOW · FUTURE

@@ -27,7 +27,7 @@ export const MarketHero: React.FC = () => {
             className="inline-flex items-center gap-1 bg-amber-400/20 hover:bg-amber-400/30 border border-amber-300/40 text-amber-200 text-[11px] sm:text-xs font-bold px-3 py-1 rounded transition-colors"
           >
             <Award className="w-3.5 h-3.5 text-amber-300" />
-            2023·2026 K-관광마켓 2회 연속 선정 &amp; 2025 인천지역유산
+            2023·2026 K-관광마켓 1·2기 연속 선정 &amp; 2025 인천지역유산
           </a>
         </div>
 

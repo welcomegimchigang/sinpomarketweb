@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Heart, Sparkles, ArrowRight } from 'lucide-react';
+import { Award, Sparkles, ArrowRight } from 'lucide-react';
 import { FoodCategory } from '../../types';
 
 interface StorePortfolioItem {
@@ -11,7 +11,7 @@ interface StorePortfolioItem {
   categoryLabel: string;
   quote: string;
   imageUrl: string;
-  likes: number;
+  badge: string;
   tip: string;
   since: string;
 }
@@ -24,7 +24,7 @@ const PORTFOLIO_ITEMS: StorePortfolioItem[] = [
     categoryLabel: '대표명물',
     quote: '“매콤달콤한 특제 양념과 가마솥 바삭함의 원조”',
     imageUrl: 'https://images.unsplash.com/photo-1569058242253-92a9c755a0ec?auto=format&fit=crop&w=800&q=80',
-    likes: 68,
+    badge: '대표 명물',
     tip: '포장 전용 줄과 매장 식사 줄이 구분되어 있습니다.',
     since: 'since 1985',
   },
@@ -35,7 +35,7 @@ const PORTFOLIO_ITEMS: StorePortfolioItem[] = [
     categoryLabel: '별미간식',
     quote: '“정성 가득한 오색만두와 숯불 옹기 화덕에서 구워낸 공갈빵”',
     imageUrl: 'https://images.unsplash.com/photo-1541696432-82c6da8ce7bf?auto=format&fit=crop&w=800&q=80',
-    likes: 69,
+    badge: '화덕 별미',
     tip: '오색만두와 갓 구워낸 바삭한 공갈빵은 신포의 필수 별미입니다.',
     since: 'since 1978',
   },
@@ -46,7 +46,7 @@ const PORTFOLIO_ITEMS: StorePortfolioItem[] = [
     categoryLabel: '식사/노포',
     quote: '“1970년대 초 인천 중구 경동 광신제면에서 탄생한 국민 분식 쫄면의 고향”',
     imageUrl: 'https://images.unsplash.com/photo-1552611052-33e04de081de?auto=format&fit=crop&w=800&q=80',
-    likes: 62,
+    badge: '1970s 원조',
     tip: '우연히 뽑힌 굵은 면발에서 시작된 원조 쫄면과 만두의 조화!',
     since: 'since 1970s',
   },
@@ -57,14 +57,14 @@ const PORTFOLIO_ITEMS: StorePortfolioItem[] = [
     categoryLabel: '식사/노포',
     quote: '“시장 맞은편 칼국수골목의 진한 육수와 쫄깃한 손칼국수”',
     imageUrl: 'https://images.unsplash.com/photo-1617093727343-374698b1b08d?auto=format&fit=crop&w=800&q=80',
-    likes: 63,
+    badge: '노포 별미',
     tip: '푸성귀전 조형물과 수선 골목 인근에서 따뜻한 한 그릇을 즐겨보세요.',
     since: 'since 1978',
   },
 ];
 
 const FILTER_TABS: { id: FoodCategory; label: string }[] = [
-  { id: 'all', label: 'All' },
+  { id: 'all', label: '전체' },
   { id: 'specialty', label: '대표명물' },
   { id: 'snack', label: '별미간식' },
   { id: 'meal', label: '식사/노포' },
@@ -72,14 +72,6 @@ const FILTER_TABS: { id: FoodCategory; label: string }[] = [
 
 export const FoodSection: React.FC = () => {
   const [selectedFilter, setSelectedFilter] = useState<FoodCategory>('all');
-  const [likedMap, setLikedMap] = useState<Record<string, boolean>>({});
-
-  const handleLike = (id: string) => {
-    setLikedMap((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
-  };
 
   const filteredItems = PORTFOLIO_ITEMS.filter((item) => {
     if (selectedFilter === 'all') return true;
@@ -114,20 +106,20 @@ export const FoodSection: React.FC = () => {
         </div>
       </div>
 
-      {/* 2. Dark Portfolio Filter Bar (Kwangjang Market Benchmark) */}
+      {/* 2. Dark Portfolio Filter Bar */}
       <div className="bg-[#222222] text-white py-3.5 px-4 sm:px-8 border-b border-black/40">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           {/* Left Title */}
           <span className="text-base sm:text-lg font-bold text-white tracking-wide">
             {selectedFilter === 'all'
-              ? 'All'
+              ? '전체 먹거리'
               : FILTER_TABS.find((t) => t.id === selectedFilter)?.label}
           </span>
 
           {/* Right Filter Options */}
           <div className="flex flex-wrap items-center gap-4 text-xs text-gray-400">
             <span className="hidden sm:inline font-medium text-gray-500">
-              Sort Portfolio:
+              먹거리 분류:
             </span>
             {FILTER_TABS.map((tab) => {
               const active = selectedFilter === tab.id;
@@ -150,13 +142,10 @@ export const FoodSection: React.FC = () => {
         </div>
       </div>
 
-      {/* 3. 4-Column Portfolio Grid (Kwangjang Market Benchmark) */}
+      {/* 3. 4-Column Portfolio Grid */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {filteredItems.map((item) => {
-            const isLiked = !!likedMap[item.id];
-            const currentLikes = item.likes + (isLiked ? 1 : 0);
-
             return (
               <div
                 key={item.id}
@@ -182,7 +171,7 @@ export const FoodSection: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Card Bottom Meta (Title & Like Count) */}
+                {/* Card Bottom Meta (Title & Specialty Badge) */}
                 <div className="p-3.5 flex items-center justify-between border-t border-gray-100">
                   <div>
                     <h3 className="text-sm font-bold text-gray-900 group-hover:text-[#8C6239] transition-colors">
@@ -193,22 +182,11 @@ export const FoodSection: React.FC = () => {
                     </p>
                   </div>
 
-                  {/* Likes counter */}
-                  <button
-                    onClick={() => handleLike(item.id)}
-                    type="button"
-                    className="flex items-center gap-1 text-xs text-gray-400 hover:text-red-500 transition-colors ml-2 shrink-0"
-                    title="좋아요"
-                  >
-                    <Heart
-                      className={`w-3.5 h-3.5 ${
-                        isLiked ? 'fill-red-500 text-red-500' : 'text-gray-400'
-                      }`}
-                    />
-                    <span className={`text-[12px] ${isLiked ? 'text-red-500 font-bold' : ''}`}>
-                      {currentLikes}
-                    </span>
-                  </button>
+                  {/* Specialty Badge */}
+                  <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 border border-[#8C6239]/25 px-2.5 py-0.5 text-[10px] font-bold text-[#8C6239] ml-2 shrink-0">
+                    <Award className="w-3 h-3 text-[#E5A93C]" />
+                    {item.badge}
+                  </span>
                 </div>
               </div>
             );

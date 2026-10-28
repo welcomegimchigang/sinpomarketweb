@@ -60,7 +60,7 @@ export const EventFaq: React.FC = () => {
 
         <p className="mt-8 flex items-center justify-center gap-2 text-xs text-[#6b5640]">
           <Instagram className="h-4 w-4 text-[#8C6239]" />
-          더 궁금한 점은 공식 인스타그램{' '}
+          더 궁금한 점은 인천대 신포터즈 인스타그램{' '}
           <a
             href="https://instagram.com/sinpo.dream"
             target="_blank"

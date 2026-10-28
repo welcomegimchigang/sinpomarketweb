@@ -34,9 +34,9 @@ export const metadata: Metadata = {
     '인천 가볼만한곳',
     '신포국제시장 디지털 보물찾기',
   ],
-  authors: [{ name: '신포국제시장 프로젝트팀' }],
-  creator: '신포국제시장 프로젝트팀',
-  publisher: '신포국제시장',
+  authors: [{ name: '인천대학교 신포터즈 (지역사회동행 PBL)' }],
+  creator: '인천대학교 경제학과 지역사회동행 PBL 신포터즈팀',
+  publisher: '인천대학교 신포터즈 (Sinpoters)',
   formatDetection: {
     telephone: false,
   },

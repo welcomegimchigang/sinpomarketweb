@@ -19,7 +19,7 @@ export const Footer: React.FC = () => {
                   href="/#certifications"
                   className="text-gray-300 hover:text-white transition-colors block text-xs leading-snug"
                 >
-                  2025 인천지역유산 선정 &amp; 2023·2026 K-관광마켓 2회 연속 선정
+                  2025 인천지역유산 선정 &amp; 2023·2026 K-관광마켓 1·2기 연속 선정
                 </Link>
                 <span className="text-[11px] text-gray-500 block mt-0.5">
                   현재 시장 홍보관
@@ -62,7 +62,7 @@ export const Footer: React.FC = () => {
                 { label: '오색만두', href: '/#food' },
                 { label: '쫄면(광신제면)', href: '/#food' },
                 { label: '칼국수골목', href: '/#food' },
-                { label: 'K-관광마켓2회연속', href: '/#certifications' },
+                { label: 'K-관광마켓1·2기연속', href: '/#certifications' },
                 { label: '2025인천지역유산', href: '/#certifications' },
                 { label: '푸성귀전·100년역사', href: '/history' },
                 { label: '디지털보물찾기', href: '/event' },
@@ -81,7 +81,7 @@ export const Footer: React.FC = () => {
           {/* Col 3: INSTAGRAM (CONTACT) */}
           <div className="space-y-3">
             <h2 className="text-white text-xs font-bold tracking-wider uppercase">
-              INSTAGRAM
+              SINPOTERS INSTAGRAM
             </h2>
             <div className="pt-1 space-y-2">
               <a
@@ -93,31 +93,43 @@ export const Footer: React.FC = () => {
                 <span className="w-7 h-7 rounded-lg bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 flex items-center justify-center text-white shadow-sm group-hover:scale-105 transition-transform">
                   <Instagram className="w-4 h-4" />
                 </span>
-                <span className="group-hover:underline">@sinpo.dream</span>
+                <span className="group-hover:underline">인천대 신포터즈 (@sinpo.dream)</span>
               </a>
               <p className="text-[11px] text-gray-400 leading-relaxed">
-                신포국제시장 및 디지털 보물찾기 행사 소식, 실시간 힌트를 인스타그램에서 만나보세요.
+                인천대학교 신포터즈가 전하는 신포국제시장 이야기 및 디지털 보물찾기 행사 소식, 실시간 힌트를 인스타그램(@sinpo.dream)에서 만나보세요.
               </p>
             </div>
           </div>
         </div>
 
-        {/* Bottom Bar: Copyright & SNS */}
-        <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-gray-500">
-          <div>
-            © 2026 신포국제시장 디지털 보물찾기. All rights reserved.
+        {/* Bottom Bar: Operator Notice, Copyright & SNS */}
+        <div className="pt-6 space-y-3 text-[11px] text-gray-400">
+          <div className="rounded-lg bg-[#222222] border border-[#333333] px-4 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="px-2 py-0.5 rounded bg-[#8C6239] text-white text-[10px] font-bold tracking-wide">
+                운영 주체 안내
+              </span>
+              <span className="text-gray-200 font-medium">
+                본 웹사이트와 디지털 보물찾기 행사는 <strong>인천대학교 경제학과 지역사회동행 PBL ‘신포터즈(Sinpoters)’</strong> 팀이 기획·운영합니다.
+              </span>
+            </div>
           </div>
-          <div className="flex items-center gap-3 text-gray-400">
-            <a
-              href="https://instagram.com/sinpo.dream"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-white transition-colors flex items-center gap-1.5"
-              title="Instagram"
-            >
-              <Instagram className="w-4 h-4 text-[#E5A93C]" />
-              <span>Instagram</span>
-            </a>
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-gray-500">
+            <div>
+              © 2026 인천대학교 신포터즈 (신포국제시장 디지털 보물찾기 프로젝트). All rights reserved.
+            </div>
+            <div className="flex items-center gap-3 text-gray-400">
+              <a
+                href="https://instagram.com/sinpo.dream"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-white transition-colors flex items-center gap-1.5"
+                title="Instagram"
+              >
+                <Instagram className="w-4 h-4 text-[#E5A93C]" />
+                <span>@sinpo.dream</span>
+              </a>
+            </div>
           </div>
         </div>
       </div>
