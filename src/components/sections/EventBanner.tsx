@@ -38,7 +38,7 @@ export const EventBanner: React.FC = () => {
             title="신포국제시장 디지털 보물찾기 공식 포스터"
           >
             <img
-              src="/sinpoposter.png"
+              src="/newsinpoposter.png"
               alt="신포국제시장 디지털 보물찾기 공식 포스터"
               className="h-36 w-auto object-cover"
             />

@@ -34,7 +34,7 @@ export const EventHero: React.FC = () => {
         aria-label="신포국제시장 디지털 보물찾기 행사 공식 포스터 배경"
         className="absolute inset-0 bg-cover bg-center filter brightness-[38%] contrast-[110%]"
         style={{
-          backgroundImage: `url('/sinpoposter.png')`,
+          backgroundImage: `url('/newsinpoposter.png')`,
         }}
       />
       {/* Dark Vignette Overlay for Typography & Atmosphere */}
@@ -176,7 +176,7 @@ export const EventHero: React.FC = () => {
                 className="group relative cursor-pointer overflow-hidden rounded-2xl border-2 border-[#E5A93C]/60 bg-[#1c130b] shadow-2xl transition-all duration-300 hover:scale-[1.01] hover:border-[#E5A93C]"
               >
                 <img
-                  src="/sinpoposter.png"
+                  src="/newsinpoposter.png"
                   alt="신포국제시장 디지털 보물찾기 행사 공식 포스터"
                   className="h-auto w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
@@ -229,7 +229,7 @@ export const EventHero: React.FC = () => {
               </div>
               <div className="flex items-center gap-2">
                 <a
-                  href="/sinpoposter.png"
+                  href="/newsinpoposter.png"
                   download="신포국제시장_디지털보물찾기_포스터.png"
                   className="rounded p-1.5 text-gray-300 transition-colors hover:bg-white/10 hover:text-white"
                   title="포스터 원본 다운로드"
@@ -250,7 +250,7 @@ export const EventHero: React.FC = () => {
             {/* Modal Body: Scrollable Image */}
             <div className="overflow-y-auto p-4 flex items-center justify-center bg-black/40">
               <img
-                src="/sinpoposter.png"
+                src="/newsinpoposter.png"
                 alt="신포국제시장 디지털 보물찾기 행사 공식 포스터 고해상도 원본"
                 className="max-h-[78vh] w-auto rounded-lg shadow-xl"
               />
