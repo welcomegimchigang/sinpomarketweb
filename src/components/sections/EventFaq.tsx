@@ -62,12 +62,12 @@ export const EventFaq: React.FC = () => {
           <Instagram className="h-4 w-4 text-[#8C6239]" />
           더 궁금한 점은 인천대 신포터즈 인스타그램{' '}
           <a
-            href="https://instagram.com/sinpo.dream"
+            href="https://instagram.com/shinpo.dream"
             target="_blank"
             rel="noopener noreferrer"
             className="font-bold text-[#2a1b0e] underline hover:text-[#8C6239]"
           >
-            @sinpo.dream
+            @shinpo.dream
           </a>
           으로 문의해 주세요.
         </p>

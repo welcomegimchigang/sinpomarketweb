@@ -66,7 +66,7 @@ export const MarketFaq: React.FC = () => {
 
         <div className="mt-8 text-center text-xs text-gray-500 flex items-center justify-center gap-1.5">
           <HelpCircle className="w-3.5 h-3.5 text-[#8C6239]" />
-          <span>사이트 및 행사 관련 문의사항은 인천대 신포터즈 인스타그램(@sinpo.dream)으로 편하게 메시지를 보내주세요.</span>
+          <span>사이트 및 행사 관련 문의사항은 인천대 신포터즈 인스타그램(@shinpo.dream)으로 편하게 메시지를 보내주세요.</span>
         </div>
       </div>
     </section>

@@ -157,7 +157,7 @@ const siteJsonLd = {
           closes: '20:00',
         },
       ],
-      sameAs: ['https://instagram.com/sinpo.dream'],
+      sameAs: ['https://instagram.com/shinpo.dream'],
     },
   ],
 };

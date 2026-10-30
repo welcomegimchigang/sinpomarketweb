@@ -62,7 +62,7 @@ const eventJsonLd = {
   organizer: {
     '@type': 'Organization',
     name: '신포터즈팀 (인천대학교 경제학과 지역사회동행 PBL)',
-    url: 'https://instagram.com/sinpo.dream',
+    url: 'https://instagram.com/shinpo.dream',
   },
 };
 

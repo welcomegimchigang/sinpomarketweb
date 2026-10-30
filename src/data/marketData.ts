@@ -26,8 +26,8 @@ export const FESTIVAL_INFO = {
   rewardLocation: "신포국제시장 지원센터(고객지원센터) 앞 리워드 부스",
   rewardMethod: "모바일 당첨 화면을 지참하여 신포국제시장 지원센터(고객지원센터) 앞 리워드 부스 방문 후 즉시 수령",
   drawMethod: "QR 스캔 즉시 실시간 현장 당첨 확인 (대기 시간 없음)",
-  contactInstagram: "@sinpo.dream",
-  contactUrl: "https://instagram.com/sinpo.dream",
+  contactInstagram: "@shinpo.dream",
+  contactUrl: "https://instagram.com/shinpo.dream",
   qrCount: 20,
 };
 
@@ -769,7 +769,7 @@ export const FAQ_ITEMS: FaqItem[] = [
   {
     id: "faq-contact",
     question: "문의는 어디로 하면 되나요?",
-    answer: "행사 기획·운영팀인 인천대학교 신포터즈 인스타그램(@sinpo.dream)으로 문의해 주세요.",
+    answer: "행사 기획·운영팀인 인천대학교 신포터즈 인스타그램(@shinpo.dream)으로 문의해 주세요.",
   },
 ];
 

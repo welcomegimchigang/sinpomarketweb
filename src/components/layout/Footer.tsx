@@ -85,7 +85,7 @@ export const Footer: React.FC = () => {
             </h2>
             <div className="pt-1 space-y-2">
               <a
-                href="https://instagram.com/sinpo.dream"
+                href="https://instagram.com/shinpo.dream"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 text-gray-200 hover:text-white transition-colors text-sm font-semibold group"
@@ -93,10 +93,10 @@ export const Footer: React.FC = () => {
                 <span className="w-7 h-7 rounded-lg bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 flex items-center justify-center text-white shadow-sm group-hover:scale-105 transition-transform">
                   <Instagram className="w-4 h-4" />
                 </span>
-                <span className="group-hover:underline">인천대 신포터즈 (@sinpo.dream)</span>
+                <span className="group-hover:underline">인천대 신포터즈 (@shinpo.dream)</span>
               </a>
               <p className="text-[11px] text-gray-400 leading-relaxed">
-                인천대학교 신포터즈가 전하는 신포국제시장 이야기 및 디지털 보물찾기 행사 소식, 실시간 힌트를 인스타그램(@sinpo.dream)에서 만나보세요.
+                인천대학교 신포터즈가 전하는 신포국제시장 이야기 및 디지털 보물찾기 행사 소식, 실시간 힌트를 인스타그램(@shinpo.dream)에서 만나보세요.
               </p>
             </div>
           </div>
@@ -120,14 +120,14 @@ export const Footer: React.FC = () => {
             </div>
             <div className="flex items-center gap-3 text-gray-400">
               <a
-                href="https://instagram.com/sinpo.dream"
+                href="https://instagram.com/shinpo.dream"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-white transition-colors flex items-center gap-1.5"
                 title="Instagram"
               >
                 <Instagram className="w-4 h-4 text-[#E5A93C]" />
-                <span>@sinpo.dream</span>
+                <span>@shinpo.dream</span>
               </a>
             </div>
           </div>

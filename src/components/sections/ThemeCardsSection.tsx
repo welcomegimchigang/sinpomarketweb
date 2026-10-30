@@ -1291,7 +1291,7 @@ export const ThemeCardsSection: React.FC = () => {
               </div>
 
               <div className="pt-3 border-t border-amber-200/25 flex items-center justify-between text-[10px] font-mono text-amber-200/70">
-                <span>@sinpo.dream</span>
+                <span>@shinpo.dream</span>
                 <span>— {TOTAL_PAGES} / {TOTAL_PAGES} —</span>
               </div>
             </div>
