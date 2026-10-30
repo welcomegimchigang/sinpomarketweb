@@ -2,9 +2,9 @@
 
 import React, { useEffect, useState } from 'react';
 
-// 행사 시작(2026.11.13 12:00 KST) / 종료(2026.11.14 18:00 KST)
-const EVENT_START = new Date('2026-11-13T12:00:00+09:00').getTime();
-const EVENT_END = new Date('2026-11-14T18:00:00+09:00').getTime();
+// 행사 시작(2026.11.27 12:00 KST) / 종료(2026.11.28 18:00 KST)
+const EVENT_START = new Date('2026-11-27T12:00:00+09:00').getTime();
+const EVENT_END = new Date('2026-11-28T18:00:00+09:00').getTime();
 
 type Phase = 'before' | 'live' | 'after';
 
@@ -67,7 +67,7 @@ export const EventCountdown: React.FC = () => {
   return (
     <div>
       <p className="mb-2 text-[11px] font-bold tracking-[0.2em] text-[#E5A93C]">
-        D-DAY COUNTDOWN · 11.13(금) 12:00 OPEN
+        D-DAY COUNTDOWN · 11.27(금) 12:00 OPEN
       </p>
       <div className="flex items-stretch gap-2 sm:gap-3">
         {cells.map((cell, idx) => (

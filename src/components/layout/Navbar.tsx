@@ -70,7 +70,7 @@ export const Navbar: React.FC = () => {
           </Link>
           <span className="text-[11px] text-gray-500 font-semibold tracking-wider mt-1 text-center">
             {isEventPage
-              ? '2026 신포국제시장 디지털 보물찾기 • 인천대 신포터즈 기획·운영 (11.13 ~ 11.14)'
+              ? '2026 신포국제시장 디지털 보물찾기 • 인천대 신포터즈 기획·운영 (11.27 ~ 11.28)'
               : isHistoryPage
               ? '1883 푸성귀전에서 1929 공설시장까지 • 한 권의 책으로 읽는 신포 100년 역사관'
               : '2025 인천지역유산 • 2023·2026 K-관광마켓 1·2기 연속 선정 • 인천대 신포터즈 운영'}

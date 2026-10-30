@@ -11,9 +11,9 @@ import { EventNews } from '../../components/sections/EventNews';
 import { EventFaq } from '../../components/sections/EventFaq';
 import { buildPageMetadata, EVENT_OG_IMAGE, SITE_URL } from '../../lib/seo';
 
-const EVENT_TITLE = '신포국제시장 디지털 보물찾기 (2026.11.13~14) | 발자국 따라 골목 탐험';
+const EVENT_TITLE = '신포국제시장 디지털 보물찾기 (2026.11.27~28) | 발자국 따라 골목 탐험';
 const EVENT_DESCRIPTION =
-  '2026년 11월 13일부터 14일까지 신포국제시장에서 열리는 디지털 보물찾기! 시장 바닥 발자국을 따라 숨은 20개 QR코드를 스마트폰으로 스캔하세요. 1등 올리브영 3만원권(총 6명), 2등 다이소 1만원권(총 10명), 참가상 인천대 노트 80권 등 푸짐한 경품이 즉석에서 쏟아집니다.';
+  '2026년 11월 27일부터 28일까지 신포국제시장에서 열리는 디지털 보물찾기! 시장 바닥 발자국을 따라 숨은 20개 QR코드를 스마트폰으로 스캔하세요. 1등 올리브영 3만원권(총 6명), 2등 다이소 1만원권(총 10명), 참가상 인천대 노트 80권 등 푸짐한 경품이 즉석에서 쏟아집니다.';
 
 export const metadata: Metadata = buildPageMetadata({
   title: EVENT_TITLE,
@@ -30,8 +30,8 @@ const eventJsonLd = {
   name: '신포국제시장 디지털 보물찾기 : 발자국 따라 떠나는 신포 골목 탐험',
   description: EVENT_DESCRIPTION,
   image: [EVENT_OG_IMAGE],
-  startDate: '2026-11-13T12:00:00+09:00',
-  endDate: '2026-11-14T18:00:00+09:00',
+  startDate: '2026-11-27T12:00:00+09:00',
+  endDate: '2026-11-28T18:00:00+09:00',
   eventStatus: 'https://schema.org/EventScheduled',
   eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
   location: {

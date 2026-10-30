@@ -44,7 +44,7 @@ export const Footer: React.FC = () => {
                   디지털 보물찾기 1등 올리브영 3만원권(총 6명), 2등 다이소 1만원권(총 10명), 참가상 인천대 노트 80권 &amp; 수령 안내
                 </Link>
                 <span className="text-[11px] text-gray-500 block mt-0.5">
-                  2026. 11. 13 ~ 11. 14
+                  2026. 11. 27 ~ 11. 28
                 </span>
               </div>
             </div>
