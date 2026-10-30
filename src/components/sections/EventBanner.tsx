@@ -31,6 +31,24 @@ export const EventBanner: React.FC = () => {
               </span>
             </div>
           </div>
+          {/* Poster preview thumbnail */}
+          <Link
+            href="/event"
+            className="group relative hidden lg:block shrink-0 overflow-hidden rounded-lg border-2 border-white/30 shadow-md transition-transform hover:scale-105"
+            title="신포국제시장 디지털 보물찾기 공식 포스터"
+          >
+            <img
+              src="/sinpoposter.png"
+              alt="신포국제시장 디지털 보물찾기 공식 포스터"
+              className="h-36 w-auto object-cover"
+            />
+            <div className="absolute inset-0 bg-black/30 opacity-0 transition-opacity group-hover:opacity-100 flex items-center justify-center">
+              <span className="rounded bg-black/75 px-2 py-1 text-[10px] font-bold text-amber-200">
+                포스터 보기
+              </span>
+            </div>
+          </Link>
+
           <Link
             href="/event"
             className="shrink-0 px-7 py-3.5 bg-white text-gray-900 font-bold text-sm rounded hover:bg-gray-100 transition-colors flex items-center gap-2 shadow-sm"

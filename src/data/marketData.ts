@@ -166,7 +166,7 @@ export const ANNOUNCEMENT_ITEMS: AnnouncementItem[] = [
     author: "sinpomarket",
     category: "행사공지",
     date: "2026. 10. 20",
-    imageUrl: "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=600&q=80",
+    imageUrl: "/sinpoposter.png",
     summary: "스마트폰 카메라로 시장 바닥 발자국 스티커를 따라 20개의 QR코드를 찾고 올리브영 3만원권, 다이소 1만원권, 인천대학교 기념 노트 등 푸짐한 경품을 수령하세요.",
     tag: "디지털보물찾기",
   },
