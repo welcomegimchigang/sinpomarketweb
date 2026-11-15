@@ -11,6 +11,7 @@ export interface QrQuizData {
 export interface QrSpotItem {
   spotNumber: number; // 1 ~ 20
   spotCode: string; // "01" ~ "20"
+  secretSlug: string; // URL 추측(어뷰징) 방지용 고유 난수 슬러그 (예: "s01-8f3k9m")
   guideHeaderCode: string; // "PAST 01" ~ "FUTURE 07"
   chapterNumber: number; // 1, 2, 3
   chapterTitle: string; // "과거의 신포", "오늘의 신포", "미래의 신포"
@@ -24,6 +25,33 @@ export interface QrSpotItem {
   alleyOddsBadge: string; // 당첨 확률 UP 안내 배지
   quiz?: QrQuizData;
 }
+
+/**
+ * 1번~20번 QR 스팟별 고정 난수 슬러그 (36^6 = 약 21억 경우의 수로 주소창 숫자 대입 어뷰징 원천 차단)
+ * 앞자리는 운영진이 캔바(Canva) 작업 시 번호를 헷갈리지 않도록 s01 ~ s20 프리픽스 부여
+ */
+const SECRET_SLUGS: Record<number, string> = {
+  1: 's01-8f3k9m',
+  2: 's02-4p7v2n',
+  3: 's03-9x2q5w',
+  4: 's04-6m8t3r',
+  5: 's05-2k9b7y',
+  6: 's06-7h4n8c',
+  7: 's07-5v3p9j',
+  8: 's08-3w6z4q',
+  9: 's09-9d2r7f',
+  10: 's10-4g8m5k',
+  11: 's11-7t3x9p',
+  12: 's12-2n6v8w',
+  13: 's13-8q4k3m',
+  14: 's14-5b9r2x',
+  15: 's15-3c7p6n',
+  16: 's16-9m4w8t',
+  17: 's17-6f2k7q',
+  18: 's18-4x9n3v',
+  19: 's19-8p5t2r',
+  20: 's20-7k3m9w',
+};
 
 const QUIZ_CONFIG_MAP: Record<string, QrQuizData> = {
   'quiz-01': {
@@ -180,6 +208,7 @@ function buildQrSpots(): QrSpotItem[] {
   return ordered.map((entry, idx) => {
     const spotNumber = idx + 1;
     const spotCode = String(spotNumber).padStart(2, '0');
+    const secretSlug = SECRET_SLUGS[spotNumber];
     const zone = THEME_ZONES.find((z) => z.id === entry.card.theme)!;
     const isQuiz = entry.card.code.startsWith('QUIZ');
     const hintInfo = SPOT_LOCATION_HINTS[spotNumber];
@@ -197,6 +226,7 @@ function buildQrSpots(): QrSpotItem[] {
     return {
       spotNumber,
       spotCode,
+      secretSlug,
       guideHeaderCode: entry.guideHeaderCode,
       chapterNumber: entry.chapterNumber,
       chapterTitle: entry.chapterTitle,
@@ -216,20 +246,10 @@ function buildQrSpots(): QrSpotItem[] {
 export const QR_SPOTS: QrSpotItem[] = buildQrSpots();
 
 /**
- * URL 파라미터(`1`~`20`, `01`~`20`, 또는 `past-01` 같은 카드 ID)로 QR 스팟 조회
+ * URL 파라미터가 정확히 해당 QR의 고유 난수 슬러그(secretSlug)와 일치할 때만 반환
+ * (/qr/1, /qr/2 등 주소창 숫자 변경을 통한 꼼수 접속은 404 차단)
  */
 export function findQrSpotByParam(idParam: string): QrSpotItem | undefined {
   const normalized = decodeURIComponent(idParam).trim().toLowerCase();
-  const num = Number(normalized);
-  if (Number.isInteger(num) && num >= 1 && num <= QR_SPOTS.length) {
-    return QR_SPOTS[num - 1];
-  }
-  return QR_SPOTS.find(
-    (spot) =>
-      spot.card.id.toLowerCase() === normalized ||
-      spot.spotCode === normalized ||
-      `qr${spot.spotNumber}` === normalized ||
-      `qr-${spot.spotNumber}` === normalized ||
-      `qr-${spot.spotCode}` === normalized
-  );
+  return QR_SPOTS.find((spot) => spot.secretSlug === normalized);
 }
