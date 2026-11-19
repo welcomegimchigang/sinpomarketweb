@@ -111,3 +111,68 @@ export const TIER_LABEL: Record<DrawTier, string> = {
   NOTE: '참가상 · 인천대학교 기념 노트',
   STAMP: '스탬프',
 };
+
+// ---------------------------------------------------------------------
+// 관리자 페이지 (/admin) : 비밀번호는 서버(Supabase)에서 검증합니다.
+// ---------------------------------------------------------------------
+export interface AdminSpot {
+  id: number;
+  zone: 'PAST' | 'NOW' | 'FUTURE';
+  x: number;
+  y: number;
+  n: number; // 오늘 찍은 기기 수
+  s: number; // 점수 (-1 ~ +1)
+  m: number; // 확률 배율
+  scans: number; // 전체 스캔 횟수
+}
+
+export interface AdminScan {
+  id: number;
+  device_id: string;
+  spot_id: number;
+  created_at: string;
+  tier: DrawTier;
+  code: string | null;
+  multiplier: number | null;
+  ip: string | null;
+  claimed_at: string | null;
+}
+
+export interface AdminDashboard {
+  status: 'ok' | 'denied';
+  now: string;
+  open: boolean;
+  settings: Record<string, string>;
+  spots: AdminSpot[];
+  totals: {
+    scans: number;
+    scans_today: number;
+    devices: number;
+    devices_today: number;
+    first: number;
+    second: number;
+    note: number;
+    claimed: number;
+  };
+  available: { first: number; second: number; note: number };
+  scans: AdminScan[];
+}
+
+export interface AdminActionResult {
+  status: 'ok' | 'denied' | 'invalid' | 'notfound';
+}
+
+export const adminDashboard = (password: string) =>
+  rpc<AdminDashboard>('admin_dashboard', { p_password: password });
+
+export const adminSaveSpots = (password: string, spots: { id: number; x: number; y: number }[]) =>
+  rpc<AdminActionResult>('admin_save_spots', { p_password: password, p_spots: spots });
+
+export const adminUpdateSetting = (password: string, key: string, value: string) =>
+  rpc<AdminActionResult>('admin_update_setting', { p_password: password, p_key: key, p_value: value });
+
+export const adminSetClaimed = (password: string, id: number, claimed: boolean) =>
+  rpc<AdminActionResult>('admin_set_claimed', { p_password: password, p_id: id, p_claimed: claimed });
+
+export const adminDeleteScan = (password: string, id: number) =>
+  rpc<AdminActionResult>('admin_delete_scan', { p_password: password, p_id: id });
