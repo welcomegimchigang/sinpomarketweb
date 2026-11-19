@@ -1,7 +1,7 @@
 import React from 'react';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { QR_SPOTS, findQrSpotByParam } from '../../../data/qrSpots';
+import { QR_SPOTS, PUBLIC_QR_SPOTS, findQrSpotByParam } from '../../../data/qrSpots';
 import { QrSpotClient } from '../../../components/sections/QrSpotClient';
 import { SITE_URL, EVENT_OG_IMAGE } from '../../../lib/seo';
 
@@ -70,5 +70,5 @@ export default function QrSpotPage({ params }: QrPageProps) {
     notFound();
   }
 
-  return <QrSpotClient spot={spot} />;
+  return <QrSpotClient spot={spot} allSpots={PUBLIC_QR_SPOTS} />;
 }

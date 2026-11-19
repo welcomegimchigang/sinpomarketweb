@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import {
   QrCode,
@@ -21,21 +21,46 @@ import {
   ArrowRight,
   Trophy,
   Award,
-  AlertTriangle,
+  RefreshCw,
+  Loader2,
 } from 'lucide-react';
-import { QrSpotItem, QR_SPOTS } from '../../data/qrSpots';
+import type { QrSpotItem, PublicQrSpot } from '../../data/qrSpots';
 import { FESTIVAL_INFO } from '../../data/marketData';
+import {
+  DrawResult,
+  getDeviceId,
+  isTreasureConfigured,
+  scanAndDraw,
+} from '../../lib/treasure';
+import { TreasureLiveStatus } from './TreasureLiveStatus';
 
-interface StoredSpotRecord {
-  spotNumber: number;
-  scannedAt: string; // ISO string
-  tier: 'FIRST' | 'SECOND' | 'PARTICIPATION';
-  verifyCode: string;
-  quizAnswered?: number;
-  claimedAt?: string;
+// idle: 퀴즈 답 선택 전 / loading: 서버 추첨 중 / done: 결과 수신
+// closed: 행사 시간 외 / error: 통신 오류 / unconfigured: 추첨 서버 미연결
+type Phase = 'idle' | 'loading' | 'done' | 'closed' | 'error' | 'unconfigured';
+
+const STORAGE_KEY_QUIZ = 'sinpo_quiz_answers_v1';
+
+function readQuizAnswer(spotNumber: number): number | null {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY_QUIZ);
+    const parsed: Record<string, number> = raw ? JSON.parse(raw) : {};
+    const value = parsed[String(spotNumber)];
+    return typeof value === 'number' ? value : null;
+  } catch {
+    return null;
+  }
 }
 
-const STORAGE_KEY_RECORDS = 'sinpo_qr_spot_records_v1';
+function saveQuizAnswer(spotNumber: number, choiceIdx: number) {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY_QUIZ);
+    const parsed: Record<string, number> = raw ? JSON.parse(raw) : {};
+    parsed[String(spotNumber)] = choiceIdx;
+    localStorage.setItem(STORAGE_KEY_QUIZ, JSON.stringify(parsed));
+  } catch {
+    // ignore storage errors
+  }
+}
 
 const THEME_STYLE = {
   PAST: {
@@ -86,26 +111,6 @@ function parseStoryFlowNodes(subContent: string): { nodes: string[]; connector: 
   };
 }
 
-function generateVerifyCode(spotCode: string): string {
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  let suffix = '';
-  for (let i = 0; i < 6; i++) {
-    suffix += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return `SINPO-QR${spotCode}-${suffix}`;
-}
-
-function rollSpotTier(spot: QrSpotItem): 'FIRST' | 'SECOND' | 'PARTICIPATION' {
-  const rand = Math.random();
-  // 조용한 세로길 골목(PAST 푸성귀전, FUTURE 등대공원)에 높은 당첨 확률 가중치 적용
-  const firstCutoff = spot.theme === 'PAST' ? 0.12 : spot.theme === 'FUTURE' ? 0.14 : 0.06;
-  const secondCutoff = firstCutoff + (spot.theme === 'PAST' ? 0.30 : spot.theme === 'FUTURE' ? 0.31 : 0.19);
-
-  if (rand < firstCutoff) return 'FIRST';
-  if (rand < secondCutoff) return 'SECOND';
-  return 'PARTICIPATION';
-}
-
 function formatLiveTime(date: Date): string {
   const yyyy = date.getFullYear();
   const mm = String(date.getMonth() + 1).padStart(2, '0');
@@ -116,61 +121,57 @@ function formatLiveTime(date: Date): string {
   return `${yyyy}.${mm}.${dd} ${hh}:${min}:${ss}`;
 }
 
-export const QrSpotClient: React.FC<{ spot: QrSpotItem }> = ({ spot }) => {
+export const QrSpotClient: React.FC<{ spot: QrSpotItem; allSpots: PublicQrSpot[] }> = ({
+  spot,
+  allSpots,
+}) => {
   const style = THEME_STYLE[spot.theme];
   const flowData = spot.card.subContent ? parseStoryFlowNodes(spot.card.subContent) : null;
 
-  const [allRecords, setAllRecords] = useState<Record<number, StoredSpotRecord>>({});
-  const [currentRecord, setCurrentRecord] = useState<StoredSpotRecord | null>(null);
+  const [phase, setPhase] = useState<Phase>('idle');
+  const [result, setResult] = useState<DrawResult | null>(null);
+  const [stamps, setStamps] = useState<number[]>([]);
   const [selectedChoice, setSelectedChoice] = useState<number | null>(null);
-  const [isDrawRevealed, setIsDrawRevealed] = useState<boolean>(false);
   const [isStampBookOpen, setIsStampBookOpen] = useState<boolean>(false);
-  const [isStaffModalOpen, setIsStaffModalOpen] = useState<boolean>(false);
   const [nowTime, setNowTime] = useState<Date | null>(null);
+  const startedRef = useRef(false);
 
-  // 1. 기기별 스탬프 및 당첨 결과 로드/초기화 (새로고침해도 동일 결과 유지)
-  useEffect(() => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY_RECORDS);
-      const parsed: Record<number, StoredSpotRecord> = raw ? JSON.parse(raw) : {};
-
-      let record = parsed[spot.spotNumber];
-      if (!record) {
-        record = {
-          spotNumber: spot.spotNumber,
-          scannedAt: new Date().toISOString(),
-          tier: rollSpotTier(spot),
-          verifyCode: generateVerifyCode(spot.spotCode),
-        };
-        parsed[spot.spotNumber] = record;
-        localStorage.setItem(STORAGE_KEY_RECORDS, JSON.stringify(parsed));
-      } else {
-        if (typeof record.quizAnswered === 'number') {
-          setSelectedChoice(record.quizAnswered);
-          setIsDrawRevealed(true);
-        }
-      }
-
-      if (!spot.isQuiz) {
-        setIsDrawRevealed(true);
-      }
-
-      setAllRecords(parsed);
-      setCurrentRecord(record);
-    } catch {
-      // localStorage 접근 불가 시 폴백
-      const fallback: StoredSpotRecord = {
-        spotNumber: spot.spotNumber,
-        scannedAt: new Date().toISOString(),
-        tier: 'PARTICIPATION',
-        verifyCode: `SINPO-QR${spot.spotCode}-LIVE01`,
-      };
-      setCurrentRecord(fallback);
-      setIsDrawRevealed(true);
+  // 1. 서버 추첨 요청 (추첨·재고·확률 계산은 모두 서버에서 처리)
+  const runDraw = useCallback(async () => {
+    if (!isTreasureConfigured) {
+      setPhase('unconfigured');
+      return;
     }
-  }, [spot]);
+    setPhase('loading');
+    try {
+      const res = await scanAndDraw(spot.secretSlug, getDeviceId());
+      if (res.stamps) setStamps(res.stamps);
+      if (res.status === 'ok') {
+        setResult(res);
+        setPhase('done');
+      } else if (res.status === 'closed') {
+        setPhase('closed');
+      } else {
+        setPhase('error');
+      }
+    } catch {
+      setPhase('error');
+    }
+  }, [spot.secretSlug]);
 
-  // 2. 캡처 방지용 실시간 시계 타이머
+  // 2. 스토리 카드는 접속 즉시, 퀴즈 카드는 답을 고른 뒤 추첨
+  useEffect(() => {
+    if (startedRef.current) return;
+    startedRef.current = true;
+
+    const savedAnswer = spot.isQuiz ? readQuizAnswer(spot.spotNumber) : null;
+    if (savedAnswer !== null) setSelectedChoice(savedAnswer);
+    if (!spot.isQuiz || savedAnswer !== null) {
+      runDraw();
+    }
+  }, [spot, runDraw]);
+
+  // 3. 캡처 방지용 실시간 시계 타이머
   useEffect(() => {
     setNowTime(new Date());
     const timer = setInterval(() => {
@@ -182,50 +183,20 @@ export const QrSpotClient: React.FC<{ spot: QrSpotItem }> = ({ spot }) => {
   const handleSelectQuizChoice = (choiceIdx: number) => {
     if (selectedChoice !== null) return;
     setSelectedChoice(choiceIdx);
-    setIsDrawRevealed(true);
-
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY_RECORDS);
-      const parsed: Record<number, StoredSpotRecord> = raw ? JSON.parse(raw) : {};
-      if (parsed[spot.spotNumber]) {
-        parsed[spot.spotNumber].quizAnswered = choiceIdx;
-        localStorage.setItem(STORAGE_KEY_RECORDS, JSON.stringify(parsed));
-        setAllRecords({ ...parsed });
-        setCurrentRecord({ ...parsed[spot.spotNumber] });
-      }
-    } catch {
-      // ignore storage errors
-    }
+    saveQuizAnswer(spot.spotNumber, choiceIdx);
+    runDraw();
   };
 
-  const handleConfirmStaffClaim = () => {
-    const claimedTime = new Date().toISOString();
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY_RECORDS);
-      const parsed: Record<number, StoredSpotRecord> = raw ? JSON.parse(raw) : {};
-      if (parsed[spot.spotNumber]) {
-        parsed[spot.spotNumber].claimedAt = claimedTime;
-        localStorage.setItem(STORAGE_KEY_RECORDS, JSON.stringify(parsed));
-        setAllRecords({ ...parsed });
-        setCurrentRecord({ ...parsed[spot.spotNumber] });
-      }
-    } catch {
-      if (currentRecord) {
-        setCurrentRecord({ ...currentRecord, claimedAt: claimedTime });
-      }
-    }
-    setIsStaffModalOpen(false);
-  };
-
-  const collectedNumbers = Object.keys(allRecords).map(Number);
-  const collectedCount = collectedNumbers.length || 1;
+  const collectedCount = stamps.length;
   const isQuizAnswered = selectedChoice !== null;
   const isQuizCorrect = spot.quiz ? selectedChoice === spot.quiz.answerIndex : false;
+  const tier = phase === 'done' ? result?.tier : undefined;
+  const hasPrize = tier === 'FIRST' || tier === 'SECOND' || tier === 'NOTE';
 
   const tierMeta =
-    currentRecord?.tier === 'FIRST'
+    tier === 'FIRST'
       ? {
-          badge: '🏆 1등 황금 보물 후보 당첨!',
+          badge: '🏆 1등 황금 보물 당첨!',
           title: '올리브영 3만원권 당첨 인증권',
           subtitle: '신포 골목 깊은 곳의 숨은 행운을 찾으셨습니다! (총 6명 한정)',
           cardBg: 'from-[#3a2608] via-[#2b1b05] to-[#1c1204]',
@@ -233,9 +204,9 @@ export const QrSpotClient: React.FC<{ spot: QrSpotItem }> = ({ spot }) => {
           accent: 'text-[#F3C15F]',
           icon: Trophy,
         }
-      : currentRecord?.tier === 'SECOND'
+      : tier === 'SECOND'
       ? {
-          badge: '🎉 2등 알짜 보물 후보 당첨!',
+          badge: '🎉 2등 알짜 보물 당첨!',
           title: '다이소 1만원권 당첨 인증권',
           subtitle: '발자국을 따라 신포 골목을 누빈 보물 사냥꾼에게 드리는 행운! (총 10명 한정)',
           cardBg: 'from-[#10343b] via-[#0b252a] to-[#06171a]',
@@ -243,14 +214,24 @@ export const QrSpotClient: React.FC<{ spot: QrSpotItem }> = ({ spot }) => {
           accent: 'text-[#4dd0e1]',
           icon: Award,
         }
-      : {
-          badge: '🎁 보물 스탬프 획득 · 100% 리워드 인증권',
+      : tier === 'NOTE'
+      ? {
+          badge: '🎁 참가상 당첨 · 리워드 인증권',
           title: '참가상 인천대학교 기념 노트 수령권',
-          subtitle: '꽝 없는 100% 당첨! 스탬프 획득 및 참가상(총 80권 선착순) 수령 대상입니다.',
+          subtitle: '보물 스탬프와 함께 참가상(총 80권 선착순) 수령 대상이 되셨습니다.',
           cardBg: 'from-[#2e1f11] via-[#23170c] to-[#170f07]',
           border: 'border-[#8C6239]',
           accent: 'text-[#E5A93C]',
           icon: Gift,
+        }
+      : {
+          badge: '📍 보물 스탬프 획득!',
+          title: `QR #${spot.spotCode} 스탬프를 모았습니다`,
+          subtitle: '이번 QR에서는 스탬프를 획득했습니다. 다음 골목의 QR에서 다시 행운에 도전해 보세요!',
+          cardBg: 'from-[#2e1f11] via-[#23170c] to-[#170f07]',
+          border: 'border-[#8C6239]',
+          accent: 'text-[#E5A93C]',
+          icon: Stamp,
         };
 
   const TierIcon = tierMeta.icon;
@@ -299,8 +280,8 @@ export const QrSpotClient: React.FC<{ spot: QrSpotItem }> = ({ spot }) => {
                 </span>
               </div>
               <div className="grid grid-cols-5 sm:grid-cols-10 gap-1.5">
-                {QR_SPOTS.map((item) => {
-                  const isCollected = Boolean(allRecords[item.spotNumber]);
+                {allSpots.map((item) => {
+                  const isCollected = stamps.includes(item.spotNumber);
                   const isCurrent = item.spotNumber === spot.spotNumber;
                   return (
                     <div
@@ -523,7 +504,7 @@ export const QrSpotClient: React.FC<{ spot: QrSpotItem }> = ({ spot }) => {
           id="reward-draw"
           className={`rounded-2xl bg-gradient-to-br ${tierMeta.cardBg} text-white border-2 ${tierMeta.border} p-5 sm:p-7 shadow-2xl space-y-5`}
         >
-          {!isDrawRevealed ? (
+          {phase === 'idle' && (
             <div className="text-center py-6 space-y-4">
               <div className="mx-auto w-14 h-14 rounded-2xl bg-[#E5A93C]/20 border border-[#E5A93C]/50 flex items-center justify-center text-[#E5A93C]">
                 <Gift className="w-7 h-7" />
@@ -536,19 +517,67 @@ export const QrSpotClient: React.FC<{ spot: QrSpotItem }> = ({ spot }) => {
                   위 퀴즈의 정답을 선택하면 보물 상자가 열립니다!
                 </h2>
                 <p className="text-xs text-gray-300">
-                  3지선다 보기 중 하나를 터치해 보세요. 100% 꽝 없는 리워드 인증권이 즉시 발급됩니다.
+                  3지선다 보기 중 하나를 터치해 보세요. 선택 즉시 당첨 결과가 열립니다.
                 </p>
               </div>
               <button
                 type="button"
-                onClick={() => setIsDrawRevealed(true)}
+                onClick={runDraw}
                 className="inline-flex items-center gap-2 rounded-xl bg-[#E5A93C] px-5 py-3 text-xs sm:text-sm font-black text-[#2a1b0e] shadow-lg hover:bg-[#F3C15F] transition"
               >
                 <Sparkles className="w-4 h-4" />
                 당첨 결과 바로 열기
               </button>
             </div>
-          ) : (
+          )}
+
+          {phase === 'loading' && (
+            <div className="text-center py-10 space-y-3">
+              <Loader2 className="mx-auto w-8 h-8 animate-spin text-[#E5A93C]" />
+              <p className="text-sm font-bold text-amber-100">보물 상자를 여는 중입니다...</p>
+            </div>
+          )}
+
+          {phase === 'closed' && (
+            <div className="text-center py-6 space-y-3">
+              <Clock className="mx-auto w-8 h-8 text-[#E5A93C]" />
+              <h2 className="text-xl font-black">지금은 보물 추첨 시간이 아닙니다</h2>
+              <p className="text-xs sm:text-sm text-gray-300 leading-relaxed break-keep">
+                즉석 추첨은 행사 시간에만 열립니다.
+                <br />
+                <strong className="text-amber-200">{FESTIVAL_INFO.periodDetail}</strong>
+              </p>
+            </div>
+          )}
+
+          {phase === 'unconfigured' && (
+            <div className="text-center py-6 space-y-3">
+              <Clock className="mx-auto w-8 h-8 text-[#E5A93C]" />
+              <h2 className="text-xl font-black">보물 추첨을 준비하고 있습니다</h2>
+              <p className="text-xs sm:text-sm text-gray-300 leading-relaxed break-keep">
+                즉석 추첨은 행사 기간에 열립니다. ({FESTIVAL_INFO.periodDetail})
+              </p>
+            </div>
+          )}
+
+          {phase === 'error' && (
+            <div className="text-center py-6 space-y-4">
+              <h2 className="text-xl font-black">당첨 결과를 불러오지 못했습니다</h2>
+              <p className="text-xs sm:text-sm text-gray-300 leading-relaxed break-keep">
+                인터넷 연결을 확인한 뒤 아래 버튼을 눌러 다시 시도해 주세요.
+              </p>
+              <button
+                type="button"
+                onClick={runDraw}
+                className="inline-flex items-center gap-2 rounded-xl bg-[#E5A93C] px-5 py-3 text-xs sm:text-sm font-black text-[#2a1b0e] shadow-lg hover:bg-[#F3C15F] transition"
+              >
+                <RefreshCw className="w-4 h-4" />
+                다시 시도
+              </button>
+            </div>
+          )}
+
+          {phase === 'done' && result && (
             <>
               {/* 당첨 배지 & 타이틀 */}
               <div className="flex items-start justify-between gap-3 border-b border-white/15 pb-4">
@@ -569,79 +598,77 @@ export const QrSpotClient: React.FC<{ spot: QrSpotItem }> = ({ spot }) => {
                 </div>
               </div>
 
-              {/* 캡처 방지용 실시간 시계 & 고유 인증 코드 */}
-              <div className="rounded-xl bg-black/40 border border-white/15 p-4 space-y-3">
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <div className="flex items-center gap-2">
-                    <span className="relative flex h-2.5 w-2.5">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
-                    </span>
-                    <span className="text-xs font-bold text-emerald-300 flex items-center gap-1">
-                      <Clock className="w-3.5 h-3.5" />
-                      LIVE 실시간 인증 화면 (캡처본 사용 불가)
-                    </span>
-                  </div>
-                  <span className="font-mono text-xs sm:text-sm font-black text-white bg-white/10 px-2.5 py-1 rounded">
-                    {nowTime ? formatLiveTime(nowTime) : '실시간 동기화 중...'}
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2 border-t border-white/10 text-xs">
-                  <div className="rounded-lg bg-white/5 px-3 py-2 flex items-center justify-between">
-                    <span className="text-gray-400">고유 인증번호</span>
-                    <span className="font-mono font-black text-amber-300">
-                      {currentRecord?.verifyCode || `SINPO-QR${spot.spotCode}`}
-                    </span>
-                  </div>
-                  <div className="rounded-lg bg-white/5 px-3 py-2 flex items-center justify-between">
-                    <span className="text-gray-400">인증 스팟</span>
-                    <span className="font-bold text-white">
-                      QR #{spot.spotCode} ({spot.guideHeaderCode})
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* 현장 셀카 필수 안내 박스 */}
-              <div className="rounded-xl bg-amber-400/15 border border-amber-300/40 p-4 space-y-2">
-                <div className="flex items-center gap-2 text-amber-300 font-black text-sm">
-                  <Camera className="w-4 h-4 shrink-0" />
-                  <span>📸 현장 셀카 인증 필수 안내 (리워드 부스 제시용)</span>
-                </div>
-                <p className="text-xs sm:text-[13px] text-amber-100/95 leading-relaxed break-keep">
-                  화면 캡처 도용 방지를 위해 <strong>지금 계신 [{spot.spotLocationLabel}] 배경과 본인 얼굴이 함께 나오도록 셀카 사진</strong>을 꼭 촬영해 주세요!
-                  <br />
-                  <strong>{FESTIVAL_INFO.rewardLocation}</strong>에서 <strong>[① 이 실시간 모바일 화면 + ② 현장 셀카 사진]</strong>을 보여주시면 경품을 즉시 수령하실 수 있습니다. (운영: {FESTIVAL_INFO.periodDetail})
+              {result.repeat && (
+                <p className="rounded-lg bg-white/10 border border-white/15 px-3 py-2 text-[11px] sm:text-xs text-gray-200">
+                  이미 확인한 QR입니다. 다음 골목의 QR을 찾아보세요!
                 </p>
-              </div>
+              )}
 
-              {/* 부스 스태프 확인용 수령 완료 버튼 */}
-              <div className="pt-1">
-                {currentRecord?.claimedAt ? (
-                  <div className="w-full rounded-xl bg-gray-800/90 border border-gray-600 p-3.5 text-center space-y-1">
-                    <div className="inline-flex items-center gap-1.5 text-xs font-black text-gray-300">
-                      <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                      <span>리워드 부스 경품 수령 완료 ({currentRecord.claimedAt.slice(0, 10)})</span>
+              {hasPrize && (
+                <>
+                  {/* 캡처 방지용 실시간 시계 & 고유 인증 코드 */}
+                  <div className="rounded-xl bg-black/40 border border-white/15 p-4 space-y-3">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <div className="flex items-center gap-2">
+                        <span className="relative flex h-2.5 w-2.5">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                          <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
+                        </span>
+                        <span className="text-xs font-bold text-emerald-300 flex items-center gap-1">
+                          <Clock className="w-3.5 h-3.5" />
+                          LIVE 실시간 인증 화면 (캡처본 사용 불가)
+                        </span>
+                      </div>
+                      <span className="font-mono text-xs sm:text-sm font-black text-white bg-white/10 px-2.5 py-1 rounded">
+                        {nowTime ? formatLiveTime(nowTime) : '실시간 동기화 중...'}
+                      </span>
                     </div>
-                    <p className="text-[11px] text-gray-400">
-                      이미 부스 스태프 확인이 완료된 QR 스팟입니다. 다음 골목의 QR을 찾아보세요!
-                    </p>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2 border-t border-white/10 text-xs">
+                      <div className="rounded-lg bg-white/5 px-3 py-2 flex items-center justify-between gap-2">
+                        <span className="text-gray-400 shrink-0">고유 인증번호</span>
+                        <span className="font-mono font-black text-amber-300">{result.code}</span>
+                      </div>
+                      <div className="rounded-lg bg-white/5 px-3 py-2 flex items-center justify-between">
+                        <span className="text-gray-400">인증 스팟</span>
+                        <span className="font-bold text-white">
+                          QR #{spot.spotCode} ({spot.guideHeaderCode})
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={() => setIsStaffModalOpen(true)}
-                    className="w-full rounded-xl bg-white/10 hover:bg-white/20 border border-white/25 py-3 px-4 text-xs font-bold text-gray-200 transition flex items-center justify-center gap-2"
-                  >
-                    <ShieldCheck className="w-4 h-4 text-[#E5A93C]" />
-                    <span>[부스 스태프 전용] 경품 수령 완료 처리하기 (방문객 터치 금지)</span>
-                  </button>
-                )}
-              </div>
+
+                  {result.claimed_at ? (
+                    <div className="w-full rounded-xl bg-gray-800/90 border border-gray-600 p-3.5 text-center space-y-1">
+                      <div className="inline-flex items-center gap-1.5 text-xs font-black text-gray-300">
+                        <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                        <span>리워드 부스 경품 수령 완료</span>
+                      </div>
+                      <p className="text-[11px] text-gray-400">
+                        이미 수령이 완료된 인증권입니다. 다음 골목의 QR을 찾아보세요!
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="rounded-xl bg-amber-400/15 border border-amber-300/40 p-4 space-y-2">
+                      <div className="flex items-center gap-2 text-amber-300 font-black text-sm">
+                        <Camera className="w-4 h-4 shrink-0" />
+                        <span>📸 경품 수령 방법 (리워드 부스 제시용)</span>
+                      </div>
+                      <p className="text-xs sm:text-[13px] text-amber-100/95 leading-relaxed break-keep">
+                        화면 캡처 도용 방지를 위해 <strong>지금 계신 [{spot.spotLocationLabel}] 배경과 본인 얼굴이 함께 나오도록 셀카 사진</strong>을 촬영해 주세요.
+                        <br />
+                        <strong>{FESTIVAL_INFO.rewardLocation}</strong>에서 <strong>[① 이 실시간 화면의 인증번호 + ② 현장 셀카 사진]</strong>을 보여주시면 스태프 확인 후 경품을 드립니다. (운영: {FESTIVAL_INFO.periodDetail})
+                      </p>
+                    </div>
+                  )}
+                </>
+              )}
             </>
           )}
         </section>
+
+        {/* 4-1. 실시간 남은 경품 & 지금 확률 높은 골목 */}
+        <TreasureLiveStatus spots={allSpots} />
 
         {/* 5. 다음 보물 힌트 & 전체 가이드북 이동 카드 */}
         <section className="rounded-2xl bg-white border border-[#d8c39e] p-5 sm:p-6 shadow-sm space-y-4">
@@ -682,42 +709,6 @@ export const QrSpotClient: React.FC<{ spot: QrSpotItem }> = ({ spot }) => {
         </section>
       </div>
 
-      {/* 부스 스태프 확인용 모달 */}
-      {isStaffModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div
-            className="fixed inset-0 bg-black/70 backdrop-blur-sm"
-            onClick={() => setIsStaffModalOpen(false)}
-          />
-          <div className="relative z-10 w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl border border-gray-200 space-y-4">
-            <div className="flex items-center gap-2.5 text-amber-700">
-              <AlertTriangle className="w-6 h-6 shrink-0 text-amber-600" />
-              <h4 className="text-base font-black text-gray-900">
-                부스 스태프 확인 전용
-              </h4>
-            </div>
-            <p className="text-xs sm:text-sm text-gray-600 leading-relaxed break-keep">
-              이 버튼은 <strong>신포국제시장 고객지원센터 앞 리워드 부스 운영진</strong>이 경품 지급 시 누르는 확인 버튼입니다. 방문객이 직접 누르면 수령 완료 처리되어 경품을 받을 수 없습니다.
-            </p>
-            <div className="flex items-center gap-2 pt-2">
-              <button
-                type="button"
-                onClick={handleConfirmStaffClaim}
-                className="flex-1 rounded-xl bg-[#8C6239] py-2.5 text-xs font-black text-white hover:bg-[#724f2c]"
-              >
-                스태프 확인 완료
-              </button>
-              <button
-                type="button"
-                onClick={() => setIsStaffModalOpen(false)}
-                className="flex-1 rounded-xl border border-gray-300 py-2.5 text-xs font-bold text-gray-700 hover:bg-gray-100"
-              >
-                취소 (닫기)
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

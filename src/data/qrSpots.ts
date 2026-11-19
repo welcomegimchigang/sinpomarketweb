@@ -21,8 +21,7 @@ export interface QrSpotItem {
   zone: ThemeZoneInfo;
   spotLocationLabel: string; // 현장 스팟 위치 안내 (셀카 배경 안내용)
   nextSpotHint: string; // 다음 보물 찾기 동선 힌트
-  alleyWinChance: number; // 동적 당첨 확률 가중치 (소외 골목 PAST/FUTURE 우대)
-  alleyOddsBadge: string; // 당첨 확률 UP 안내 배지
+  alleyOddsBadge: string; // 구역 안내 배지 (실제 당첨 확률은 서버에서 실시간 계산)
   quiz?: QrQuizData;
 }
 
@@ -142,7 +141,7 @@ const SPOT_LOCATION_HINTS: Record<number, { spotLocationLabel: string; nextSpotH
   },
   13: {
     spotLocationLabel: '메인시장 서측 연결 통로',
-    nextSpotHint: '이제 당첨 확률이 대폭 올라가는 좌측 세로길(등대공원 인근) 미래의 신포 [QR #14]로 이동하세요!',
+    nextSpotHint: '이제 좌측 세로길(등대공원 인근) 미래의 신포 [QR #14]로 이동하세요!',
   },
   14: {
     spotLocationLabel: '좌측 세로길 초입 (등대공원 방향)',
@@ -213,15 +212,12 @@ function buildQrSpots(): QrSpotItem[] {
     const isQuiz = entry.card.code.startsWith('QUIZ');
     const hintInfo = SPOT_LOCATION_HINTS[spotNumber];
 
-    // 조용한 세로길 골목(PAST 푸성귀전, FUTURE 등대공원)에 높은 당첨 확률 부여 (동적 확률 넛지 반영)
-    const alleyWinChance =
-      entry.card.theme === 'PAST' ? 0.42 : entry.card.theme === 'FUTURE' ? 0.45 : 0.25;
     const alleyOddsBadge =
       entry.card.theme === 'PAST'
-        ? '🔥 숨은 골목(푸성귀전) 당첨 확률 UP 구역 (×1.7배)'
+        ? '🧭 숨은 골목(푸성귀전) 보물 스팟'
         : entry.card.theme === 'FUTURE'
-        ? '🔥 숨은 골목(등대공원) 당첨 확률 UP 구역 (×1.8배)'
-        : '✨ 메인시장 통로 보물 스팟 (기본 확률 구역)';
+        ? '🧭 숨은 골목(등대공원) 보물 스팟'
+        : '✨ 메인시장 통로 보물 스팟';
 
     return {
       spotNumber,
@@ -236,7 +232,6 @@ function buildQrSpots(): QrSpotItem[] {
       zone,
       spotLocationLabel: hintInfo.spotLocationLabel,
       nextSpotHint: hintInfo.nextSpotHint,
-      alleyWinChance,
       alleyOddsBadge,
       quiz: isQuiz ? QUIZ_CONFIG_MAP[entry.card.id] : undefined,
     };
@@ -244,6 +239,24 @@ function buildQrSpots(): QrSpotItem[] {
 }
 
 export const QR_SPOTS: QrSpotItem[] = buildQrSpots();
+
+/**
+ * 브라우저로 내려보내도 되는 QR 목록 (난수 슬러그 제외)
+ * 스탬프 도감과 실시간 '확률 높은 골목' 표시에 사용합니다.
+ */
+export interface PublicQrSpot {
+  spotNumber: number;
+  spotCode: string;
+  theme: ThemeCategory;
+  locationLabel: string;
+}
+
+export const PUBLIC_QR_SPOTS: PublicQrSpot[] = QR_SPOTS.map((spot) => ({
+  spotNumber: spot.spotNumber,
+  spotCode: spot.spotCode,
+  theme: spot.theme,
+  locationLabel: spot.spotLocationLabel,
+}));
 
 /**
  * URL 파라미터가 정확히 해당 QR의 고유 난수 슬러그(secretSlug)와 일치할 때만 반환

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Footprints, QrCode, TrendingUp, BookOpen } from 'lucide-react';
 import { EVENT_FEATURES } from '../../data/marketData';
-import { OddsSimulator } from './OddsSimulator';
+import { PUBLIC_QR_SPOTS } from '../../data/qrSpots';
+import { TreasureLiveStatus } from './TreasureLiveStatus';
 
 const iconMap = { Footprints, QrCode, TrendingUp, BookOpen };
 
@@ -74,7 +75,7 @@ export const EventFeatures: React.FC = () => {
         </div>
 
         <div className="mt-14">
-          <OddsSimulator />
+          <TreasureLiveStatus spots={PUBLIC_QR_SPOTS} />
         </div>
       </div>
     </section>
