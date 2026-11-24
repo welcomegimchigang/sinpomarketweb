@@ -41,7 +41,7 @@ export const Footer: React.FC = () => {
                   href="/event#rewards"
                   className="text-gray-300 hover:text-white transition-colors block text-xs leading-snug"
                 >
-                  디지털 보물찾기 1등 올리브영 3만원권(총 6명), 2등 다이소 1만원권(총 10명), 참가상 인천대 노트 80권 &amp; 수령 안내
+                  디지털 보물찾기 1등 BBQ 반반세트(총 6명), 2등 스타벅스 든든한 아침식사 세트(총 10명), 참가상 인천대 노트 80권 &amp; 수령 안내
                 </Link>
                 <span className="text-[11px] text-gray-500 block mt-0.5">
                   2026. 11. 27 ~ 11. 28

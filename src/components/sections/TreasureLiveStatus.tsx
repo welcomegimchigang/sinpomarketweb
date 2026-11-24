@@ -64,14 +64,14 @@ export const TreasureLiveStatus: React.FC<{ spots: PublicQrSpot[] }> = ({ spots 
         {
           key: 'first',
           icon: Trophy,
-          name: '1등 올리브영 3만원권',
+          name: '1등 BBQ 반반세트',
           remaining: status.remaining.first,
           now: status.available.first,
         },
         {
           key: 'second',
           icon: Award,
-          name: '2등 다이소 1만원권',
+          name: '2등 스타벅스 든든한 아침식사 세트',
           remaining: status.remaining.second,
           now: status.available.second,
         },

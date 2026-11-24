@@ -7,7 +7,7 @@ import type { Metadata } from 'next';
 export const SITE_URL = 'https://sinpomarket.co.kr';
 export const SITE_NAME = '신포국제시장';
 export const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.png`;
-export const EVENT_OG_IMAGE = `${SITE_URL}/og-event.png`;
+export const EVENT_OG_IMAGE = `${SITE_URL}/og-event-1124.png`;
 
 // [검색엔진 소유권 확인 코드 및 애널리틱스 ID]
 export const GOOGLE_SITE_VERIFICATION = ''; // 구글 서치 콘솔 인증 코드 (예: 'abc123xyz...')

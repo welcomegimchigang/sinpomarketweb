@@ -17,7 +17,7 @@ export const EventBanner: React.FC = () => {
             </h2>
             <p className="text-sm sm:text-base text-white/90 max-w-xl">
               {FESTIVAL_INFO.subTitle}. 골목 곳곳에 숨은 QR코드 20개를 찾고
-              올리브영 3만원권, 다이소 1만원권, 인천대학교 기념 노트 등 경품을 받아가세요.
+              BBQ 반반세트, 스타벅스 든든한 아침식사 세트, 인천대학교 기념 노트 등 경품을 받아가세요.
             </p>
             <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 text-xs text-white/90 pt-1">
               <span className="flex items-center gap-1.5">
@@ -38,7 +38,7 @@ export const EventBanner: React.FC = () => {
             title="신포국제시장 디지털 보물찾기 공식 포스터"
           >
             <img
-              src="/newsinpoposter.png"
+              src="/sinpoposter-1124.png"
               alt="신포국제시장 디지털 보물찾기 공식 포스터"
               className="h-36 w-auto object-cover"
             />

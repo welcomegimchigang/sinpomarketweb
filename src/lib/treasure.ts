@@ -106,8 +106,8 @@ export function getDeviceId(): string {
 }
 
 export const TIER_LABEL: Record<DrawTier, string> = {
-  FIRST: '1등 · 올리브영 3만원권',
-  SECOND: '2등 · 다이소 1만원권',
+  FIRST: '1등 · BBQ 반반세트',
+  SECOND: '2등 · 스타벅스 든든한 아침식사 세트',
   NOTE: '참가상 · 인천대학교 기념 노트',
   STAMP: '스탬프',
 };

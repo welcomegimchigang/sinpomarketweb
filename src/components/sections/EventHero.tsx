@@ -34,7 +34,7 @@ export const EventHero: React.FC = () => {
         aria-label="신포국제시장 디지털 보물찾기 행사 공식 포스터 배경"
         className="absolute inset-0 bg-cover bg-center filter brightness-[38%] contrast-[110%]"
         style={{
-          backgroundImage: `url('/newsinpoposter.png')`,
+          backgroundImage: `url('/sinpoposter-1124.png')`,
         }}
       />
       {/* Dark Vignette Overlay for Typography & Atmosphere */}
@@ -76,7 +76,7 @@ export const EventHero: React.FC = () => {
           <p className="max-w-xl text-sm leading-relaxed text-gray-300 sm:text-base break-keep">
             바닥에 숨겨진 발자국을 따라 걷다 보면 어느새 시장 구석구석!
             <br className="hidden sm:inline" />{' '}
-            골목 곳곳 {FESTIVAL_INFO.qrCount}개의 QR코드를 찾아 올리브영 3만원권, 다이소 1만원권 등 푸짐한 경품을 받아가세요.
+            골목 곳곳 {FESTIVAL_INFO.qrCount}개의 QR코드를 찾아 BBQ 반반세트, 스타벅스 든든한 아침식사 세트 등 푸짐한 경품을 받아가세요.
           </p>
 
           <EventCountdown />
@@ -176,7 +176,7 @@ export const EventHero: React.FC = () => {
                 className="group relative cursor-pointer overflow-hidden rounded-2xl border-2 border-[#E5A93C]/60 bg-[#1c130b] shadow-2xl transition-all duration-300 hover:scale-[1.01] hover:border-[#E5A93C]"
               >
                 <img
-                  src="/newsinpoposter.png"
+                  src="/sinpoposter-1124.png"
                   alt="신포국제시장 디지털 보물찾기 행사 공식 포스터"
                   className="h-auto w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
@@ -229,7 +229,7 @@ export const EventHero: React.FC = () => {
               </div>
               <div className="flex items-center gap-2">
                 <a
-                  href="/newsinpoposter.png"
+                  href="/sinpoposter-1124.png"
                   download="신포국제시장_디지털보물찾기_포스터.png"
                   className="rounded p-1.5 text-gray-300 transition-colors hover:bg-white/10 hover:text-white"
                   title="포스터 원본 다운로드"
@@ -250,7 +250,7 @@ export const EventHero: React.FC = () => {
             {/* Modal Body: Scrollable Image */}
             <div className="overflow-y-auto p-4 flex items-center justify-center bg-black/40">
               <img
-                src="/newsinpoposter.png"
+                src="/sinpoposter-1124.png"
                 alt="신포국제시장 디지털 보물찾기 행사 공식 포스터 고해상도 원본"
                 className="max-h-[78vh] w-auto rounded-lg shadow-xl"
               />

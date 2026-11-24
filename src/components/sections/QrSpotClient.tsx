@@ -197,7 +197,7 @@ export const QrSpotClient: React.FC<{ spot: QrSpotItem; allSpots: PublicQrSpot[]
     tier === 'FIRST'
       ? {
           badge: '🏆 1등 황금 보물 당첨!',
-          title: '올리브영 3만원권 당첨 인증권',
+          title: 'BBQ 반반세트 당첨 인증권',
           subtitle: '신포 골목 깊은 곳의 숨은 행운을 찾으셨습니다! (총 6명 한정)',
           cardBg: 'from-[#3a2608] via-[#2b1b05] to-[#1c1204]',
           border: 'border-[#E5A93C]',
@@ -207,7 +207,7 @@ export const QrSpotClient: React.FC<{ spot: QrSpotItem; allSpots: PublicQrSpot[]
       : tier === 'SECOND'
       ? {
           badge: '🎉 2등 알짜 보물 당첨!',
-          title: '다이소 1만원권 당첨 인증권',
+          title: '스타벅스 든든한 아침식사 세트 당첨 인증권',
           subtitle: '발자국을 따라 신포 골목을 누빈 보물 사냥꾼에게 드리는 행운! (총 10명 한정)',
           cardBg: 'from-[#10343b] via-[#0b252a] to-[#06171a]',
           border: 'border-[#00ACC1]',
