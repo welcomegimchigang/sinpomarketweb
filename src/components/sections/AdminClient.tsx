@@ -61,6 +61,11 @@ function formatKst(iso?: string | null): string {
 
 type Coord = { x: number; y: number };
 
+const MAP_IMAGE = '/admin-map.webp';
+const MAP_FRAME = { minX: 0, minY: 0, w: 100, h: (100 * 280) / 981 };
+const MAP_PAD = 2.5; // 가장자리 점이 잘리지 않도록 지도 둘레에 두는 여백
+const TRAY_H = 8; // 지도 아래 '아직 놓지 않은 QR' 대기 줄 높이
+
 export const AdminClient: React.FC<{ spots: PublicQrSpot[] }> = ({ spots }) => {
   const [password, setPassword] = useState('');
   const [input, setInput] = useState('');
@@ -184,20 +189,15 @@ export const AdminClient: React.FC<{ spots: PublicQrSpot[] }> = ({ spots }) => {
     return map;
   }, [data, coordDraft]);
 
-  const bounds = useMemo(() => {
-    const list = Object.values(coords);
-    if (list.length === 0) return { minX: 0, minY: 0, w: 100, h: 60 };
-    const xs = list.map((c) => c.x);
-    const ys = list.map((c) => c.y);
-    const minX = Math.min(...xs);
-    const minY = Math.min(...ys);
-    const w = Math.max(Math.max(...xs) - minX, 10);
-    const h = Math.max(Math.max(...ys) - minY, 10);
-    const pad = Math.max(w, h) * 0.12;
-    return { minX: minX - pad, minY: minY - pad, w: w + pad * 2, h: h + pad * 2 };
-    // 드래그 중에는 지도 범위를 고정해야 점이 튀지 않으므로 서버 데이터 기준으로만 다시 계산
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data]);
+  // 좌표평면 = 시장 지도 이미지(public/admin-map.webp, 981x280)와 같은 틀. 가로를 100으로 둡니다.
+  const bounds = MAP_FRAME;
+  const clampToMap = (c: Coord): Coord => ({
+    x: Math.min(Math.max(c.x, 0), MAP_FRAME.w),
+    y: Math.min(Math.max(c.y, 0), MAP_FRAME.h),
+  });
+
+  const isOutside = (c: Coord) => c.x < 0 || c.x > MAP_FRAME.w || c.y < 0 || c.y > MAP_FRAME.h;
+  const outsideIds = (data?.spots ?? []).filter((sp) => isOutside(coords[sp.id])).map((sp) => sp.id);
 
   const dirtyCoords = Object.keys(coordDraft).length > 0;
 
@@ -379,20 +379,20 @@ export const AdminClient: React.FC<{ spots: PublicQrSpot[] }> = ({ spots }) => {
             </div>
           </div>
           <p className="mb-3 text-xs text-[#6b5640]">
-            지도의 점을 끌어 옮기거나 표의 숫자를 고친 뒤 <strong>좌표 저장</strong>을 누르세요. 단위는 상관없고 서로의 거리 비율만 맞으면 됩니다. 원이 클수록 오늘 많이 찍힌 QR입니다.
+            지도 위에서 점을 실제 QR 부착 위치로 끌어 옮긴 뒤 <strong>좌표 저장</strong>을 누르세요. 아직 놓지 않은 점은 지도 아래 줄에 번호순으로 있습니다. 원이 클수록 오늘 많이 찍힌 QR입니다.
           </p>
 
-          <div className="grid gap-4 lg:grid-cols-[1.1fr_1fr]">
-            <div className="overflow-hidden rounded-xl border border-[#e4d5b7] bg-[#fdfaf3]">
+          <div className="grid gap-4">
+            <div className="overflow-x-auto rounded-xl border border-[#e4d5b7] bg-[#fdfaf3]">
               <svg
                 ref={svgRef}
-                viewBox={`${bounds.minX} ${bounds.minY} ${bounds.w} ${bounds.h}`}
-                className="h-auto w-full touch-none select-none"
-                style={{ aspectRatio: `${bounds.w} / ${bounds.h}`, maxHeight: 520 }}
+                viewBox={`${-MAP_PAD} ${-MAP_PAD} ${bounds.w + MAP_PAD * 2} ${bounds.h + MAP_PAD + TRAY_H}`}
+                className="h-auto w-full min-w-[820px] touch-none select-none"
+                style={{ aspectRatio: `${bounds.w + MAP_PAD * 2} / ${bounds.h + MAP_PAD + TRAY_H}` }}
                 onPointerMove={(e) => {
                   if (dragRef.current === null) return;
                   const c = pointerToCoord(e);
-                  if (c) setCoord(dragRef.current, c);
+                  if (c) setCoord(dragRef.current, clampToMap(c));
                 }}
                 onPointerUp={() => {
                   dragRef.current = null;
@@ -401,10 +401,39 @@ export const AdminClient: React.FC<{ spots: PublicQrSpot[] }> = ({ spots }) => {
                   dragRef.current = null;
                 }}
               >
+                <image
+                  href={MAP_IMAGE}
+                  x={0}
+                  y={0}
+                  width={bounds.w}
+                  height={bounds.h}
+                  preserveAspectRatio="none"
+                  pointerEvents="none"
+                />
+                <rect
+                  x={0}
+                  y={0}
+                  width={bounds.w}
+                  height={bounds.h}
+                  fill="none"
+                  stroke="#8C6239"
+                  strokeWidth={0.2}
+                  pointerEvents="none"
+                />
+                {outsideIds.length > 0 && (
+                  <text x={0} y={bounds.h + 2.2} fontSize={1.5} fontWeight={700} fill="#6b5640" pointerEvents="none">
+                    아직 지도에 놓지 않은 QR ({outsideIds.length}개) — 지도 위로 끌어 올리세요
+                  </text>
+                )}
                 {data.spots.map((sp) => {
-                  const c = coords[sp.id];
-                  const unit = Math.max(bounds.w, bounds.h) / 100;
-                  const r = unit * (2.2 + Math.min(sp.n, 40) * 0.09);
+                  // 지도 밖 좌표는 지도 아래 대기 줄에 번호순으로 보여줍니다 (끌어 올리면 지도 안 좌표로 저장)
+                  const trayIdx = outsideIds.indexOf(sp.id);
+                  const c =
+                    trayIdx >= 0
+                      ? { x: ((trayIdx + 0.5) * bounds.w) / outsideIds.length, y: bounds.h + 5.2 }
+                      : coords[sp.id];
+                  const unit = 0.7;
+                  const r = unit * (1.7 + Math.min(sp.n, 40) * 0.05);
                   return (
                     <g
                       key={sp.id}
@@ -421,14 +450,14 @@ export const AdminClient: React.FC<{ spots: PublicQrSpot[] }> = ({ spots }) => {
                         fill={ZONE_COLOR[sp.zone]}
                         fillOpacity={coordDraft[sp.id] ? 0.55 : 0.9}
                         stroke={coordDraft[sp.id] ? '#dc2626' : '#ffffff'}
-                        strokeWidth={unit * 0.45}
+                        strokeWidth={unit * 0.3}
                       />
                       <text
                         x={c.x}
                         y={c.y}
                         textAnchor="middle"
                         dominantBaseline="central"
-                        fontSize={unit * 2.4}
+                        fontSize={unit * 1.9}
                         fontWeight={900}
                         fill="#ffffff"
                         pointerEvents="none"
