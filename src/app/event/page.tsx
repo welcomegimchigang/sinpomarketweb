@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { MapPin, ArrowRight, BookOpen } from 'lucide-react';
 import { EventHero } from '../../components/sections/EventHero';
 import { EventStats } from '../../components/sections/EventStats';
-import { EventSteps } from '../../components/sections/EventSteps';
 import { EventFeatures } from '../../components/sections/EventFeatures';
 import { EventRewards } from '../../components/sections/EventRewards';
 import { EventNews } from '../../components/sections/EventNews';
@@ -78,16 +77,15 @@ export default function EventPage() {
       <EventHero />
       <EventStats />
 
-      {/* 실시간 남은 경품 & 지금 확률 높은 골목 (3단계 여정보다 먼저 보이도록 상단 배치) */}
+      {/* 실시간 남은 경품 & 지금 확률 높은 골목 (페이지 상단 배치) */}
       <section id="live" className="scroll-mt-36 bg-[#181818] py-10 sm:py-14">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <TreasureLiveStatus spots={PUBLIC_QR_SPOTS} />
         </div>
       </section>
 
-      <EventSteps />
-      <EventFeatures />
       <EventRewards />
+      <EventFeatures />
       <EventNews />
       <EventFaq />
 

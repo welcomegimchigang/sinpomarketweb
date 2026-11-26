@@ -33,9 +33,9 @@ const HISTORY_SUB_LINKS = [
 
 const EVENT_SUB_LINKS = [
   { href: '#about', label: '행사개요' },
-  { href: '#how-to-play', label: '참여방법' },
+  { href: '#live', label: '실시간 현황' },
+  { href: '#rewards', label: '경품·참여방법' },
   { href: '#features', label: '핵심포인트' },
-  { href: '#rewards', label: '경품안내' },
   { href: '#news', label: '공지사항' },
   { href: '#faq', label: 'FAQ' },
 ];

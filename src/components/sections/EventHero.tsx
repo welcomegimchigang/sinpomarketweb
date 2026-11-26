@@ -113,13 +113,6 @@ export const EventHero: React.FC = () => {
               공식 포스터 크게 보기
             </button>
             <a
-              href="#how-to-play"
-              className="flex items-center gap-2 rounded border border-[#E5A93C]/60 bg-[#E5A93C]/10 px-5 py-3 text-sm font-bold text-amber-200 transition-colors hover:bg-[#E5A93C]/20"
-            >
-              <Footprints className="h-4 w-4 text-[#E5A93C]" />
-              참여 방법 보기
-            </a>
-            <a
               href="#rewards"
               className="flex items-center gap-2 rounded border border-[#00ACC1] px-5 py-3 text-sm font-bold text-[#00ACC1] transition-colors hover:bg-[#00ACC1] hover:text-white"
             >
@@ -260,7 +253,7 @@ export const EventHero: React.FC = () => {
       )}
 
       <a
-        href="#how-to-play"
+        href="#live"
         aria-label="아래로 스크롤"
         className="relative mx-auto hidden w-fit pb-6 text-[#E5A93C]/70 transition-colors hover:text-[#E5A93C] lg:block"
       >
