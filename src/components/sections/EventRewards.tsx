@@ -121,6 +121,14 @@ export const EventRewards: React.FC = () => {
                 </li>
               ))}
             </ol>
+            <p className="mt-6 rounded-lg border border-[#00ACC1]/40 bg-[#e8f8fa] px-3.5 py-3 text-xs leading-relaxed text-[#00606b] break-keep">
+              <strong className="font-black">TIP · 사람이 적은 골목일수록 당첨 확률 UP!</strong>
+              <br />
+              찍은 사람이 적은 QR일수록 1·2등 당첨 확률이 올라갑니다.{' '}
+              <a href="#live" className="font-bold underline underline-offset-2">
+                지금 확률 높은 골목 보기
+              </a>
+            </p>
           </div>
 
           {/* claim guide */}

@@ -36,7 +36,6 @@ const EVENT_SUB_LINKS = [
   { href: '#live', label: '실시간 현황' },
   { href: '#rewards', label: '경품·참여방법' },
   { href: '#features', label: '핵심포인트' },
-  { href: '#news', label: '공지사항' },
   { href: '#faq', label: 'FAQ' },
 ];
 

@@ -6,7 +6,6 @@ import { EventHero } from '../../components/sections/EventHero';
 import { EventStats } from '../../components/sections/EventStats';
 import { EventFeatures } from '../../components/sections/EventFeatures';
 import { EventRewards } from '../../components/sections/EventRewards';
-import { EventNews } from '../../components/sections/EventNews';
 import { EventFaq } from '../../components/sections/EventFaq';
 import { TreasureLiveStatus } from '../../components/sections/TreasureLiveStatus';
 import { PUBLIC_QR_SPOTS } from '../../data/qrSpots';
@@ -86,7 +85,6 @@ export default function EventPage() {
 
       <EventRewards />
       <EventFeatures />
-      <EventNews />
       <EventFaq />
 
       {/* 오시는 길 & 역사 스토리북 CTA */}
