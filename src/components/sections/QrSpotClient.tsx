@@ -310,6 +310,34 @@ export const QrSpotClient: React.FC<{ spot: QrSpotItem; allSpots: PublicQrSpot[]
       {/* 2. 상단 히어로 배너 (현재 QR 스팟 위치 & 동적 확률 안내) */}
       <section className={`bg-gradient-to-br ${style.heroGradient} text-white py-8 px-4 border-b border-[#8C6239]/30`}>
         <div className="mx-auto max-w-2xl space-y-3">
+          {/* 처음 찍은 사람도 무슨 행사인지 바로 알 수 있는 한눈 요약 */}
+          <div className="rounded-xl border border-[#E5A93C]/50 bg-black/35 p-3.5 mb-4">
+            <div className="flex items-center justify-between gap-2">
+              <span className="inline-flex items-center gap-1.5 text-sm font-black text-[#F3C15F]">
+                <Gift className="w-4 h-4 shrink-0" />
+                {FESTIVAL_INFO.name}
+              </span>
+              <Link
+                href="/event"
+                className="inline-flex items-center gap-0.5 shrink-0 text-[11px] font-bold text-amber-200 underline underline-offset-2"
+              >
+                행사 안내
+                <ArrowRight className="w-3 h-3" />
+              </Link>
+            </div>
+            <p className="mt-1.5 text-[13px] sm:text-sm font-bold text-white leading-snug break-keep">
+              시장 곳곳의 QR {FESTIVAL_INFO.qrCount}개를 찍으면 그 자리에서 경품 추첨!
+            </p>
+            <ul className="mt-2 flex flex-wrap gap-1.5 text-[11px] font-bold">
+              <li className="rounded bg-[#E5A93C] px-2 py-0.5 text-[#2a1b0e]">1등 BBQ 반반세트</li>
+              <li className="rounded bg-white/90 px-2 py-0.5 text-[#2a1b0e]">2등 스타벅스 아침식사 세트</li>
+              <li className="rounded bg-white/15 px-2 py-0.5 text-amber-100">참가상 인천대 노트</li>
+            </ul>
+            <p className="mt-2 text-[11px] text-gray-300 leading-snug break-keep">
+              {FESTIVAL_INFO.period} {FESTIVAL_INFO.hours} · 당첨되면 지원센터 앞 리워드 부스에서 수령
+            </p>
+          </div>
+
           <div className="flex flex-wrap items-center gap-2">
             <span className="inline-flex items-center gap-1 rounded bg-white/15 px-2.5 py-1 text-[11px] font-bold text-amber-200">
               <MapPin className="w-3.5 h-3.5 text-[#E5A93C]" />
