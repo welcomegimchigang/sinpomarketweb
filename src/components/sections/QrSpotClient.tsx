@@ -29,8 +29,10 @@ import { FESTIVAL_INFO } from '../../data/marketData';
 import {
   DrawResult,
   getDeviceId,
+  getTreasureStatus,
   isTreasureConfigured,
   scanAndDraw,
+  TreasureStatus,
 } from '../../lib/treasure';
 import { TreasureLiveStatus } from './TreasureLiveStatus';
 
@@ -111,6 +113,22 @@ function parseStoryFlowNodes(subContent: string): { nodes: string[]; connector: 
   };
 }
 
+// 다음 경품이 풀리는 시각을 한국 시간으로 표시 (오늘이면 "14:00", 다른 날이면 "11.28(토) 12:00")
+function formatNextRelease(iso: string): string {
+  const next = new Date(iso);
+  const dayOf = (d: Date) => d.toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' });
+  const time = next.toLocaleTimeString('ko-KR', {
+    timeZone: 'Asia/Seoul',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  });
+  if (dayOf(next) === dayOf(new Date())) return time;
+  const md = next.toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul', month: 'numeric', day: 'numeric' });
+  const wd = next.toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul', weekday: 'short' });
+  return `${md.replace(/\s/g, '')}(${wd}) ${time}`;
+}
+
 function formatLiveTime(date: Date): string {
   const yyyy = date.getFullYear();
   const mm = String(date.getMonth() + 1).padStart(2, '0');
@@ -134,6 +152,7 @@ export const QrSpotClient: React.FC<{ spot: QrSpotItem; allSpots: PublicQrSpot[]
   const [selectedChoice, setSelectedChoice] = useState<number | null>(null);
   const [isStampBookOpen, setIsStampBookOpen] = useState<boolean>(false);
   const [nowTime, setNowTime] = useState<Date | null>(null);
+  const [liveStatus, setLiveStatus] = useState<TreasureStatus | null>(null);
   const startedRef = useRef(false);
 
   // 1. 서버 추첨 요청 (추첨·재고·확률 계산은 모두 서버에서 처리)
@@ -149,6 +168,12 @@ export const QrSpotClient: React.FC<{ spot: QrSpotItem; allSpots: PublicQrSpot[]
       if (res.status === 'ok') {
         setResult(res);
         setPhase('done');
+        // 꽝일 때 '이번 시간대 경품 소진' 안내를 띄우기 위해 현재 물량을 확인 (실패해도 결과 화면은 그대로)
+        if (res.tier === 'STAMP') {
+          getTreasureStatus()
+            .then(setLiveStatus)
+            .catch(() => undefined);
+        }
       } else if (res.status === 'closed') {
         setPhase('closed');
       } else {
@@ -193,6 +218,17 @@ export const QrSpotClient: React.FC<{ spot: QrSpotItem; allSpots: PublicQrSpot[]
   const tier = phase === 'done' ? result?.tier : undefined;
   const hasPrize = tier === 'FIRST' || tier === 'SECOND' || tier === 'NOTE';
 
+  // 이번 시간대에 풀린 1등·2등·노트가 모두 나간 상태인지
+  const soldOutNow =
+    tier === 'STAMP' &&
+    liveStatus !== null &&
+    liveStatus.open &&
+    liveStatus.available.first === 0 &&
+    liveStatus.available.second === 0 &&
+    (liveStatus.available.note ?? 0) === 0;
+  const nextReleaseLabel =
+    soldOutNow && liveStatus?.next_release_at ? formatNextRelease(liveStatus.next_release_at) : null;
+
   const tierMeta =
     tier === 'FIRST'
       ? {
@@ -223,6 +259,20 @@ export const QrSpotClient: React.FC<{ spot: QrSpotItem; allSpots: PublicQrSpot[]
           border: 'border-[#8C6239]',
           accent: 'text-[#E5A93C]',
           icon: Gift,
+        }
+      : soldOutNow
+      ? {
+          badge: '⏰ 이번 시간대 경품이 모두 나갔어요',
+          title: nextReleaseLabel
+            ? `${nextReleaseLabel}부터 다시 도전해 주세요!`
+            : '준비된 경품이 모두 소진되었습니다',
+          subtitle: nextReleaseLabel
+            ? `지금은 이번 시간대에 준비된 경품이 모두 나갔습니다. ${nextReleaseLabel}에 새 경품이 풀리니 그때 QR을 다시 찍어 보세요. QR #${spot.spotCode} 스탬프는 도감에 찍혔어요.`
+            : `참여해 주셔서 감사합니다. QR #${spot.spotCode} 스탬프는 도감에 찍혔어요.`,
+          cardBg: 'from-[#2e1f11] via-[#23170c] to-[#170f07]',
+          border: 'border-[#8C6239]',
+          accent: 'text-[#E5A93C]',
+          icon: Clock,
         }
       : {
           badge: '😢 아쉽지만 이번엔 꽝!',

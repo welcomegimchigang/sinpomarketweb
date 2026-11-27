@@ -31,7 +31,7 @@ export interface HotSpot {
 export interface TreasureStatus {
   open: boolean;
   warmed: boolean; // false 면 아직 모든 QR이 같은 확률
-  available: { first: number; second: number }; // 지금 당첨 가능한 수량
+  available: { first: number; second: number; note?: number }; // 지금(이번 시간대) 당첨 가능한 수량
   remaining: { first: number; second: number; note: number }; // 전체 남은 수량
   next_release_at: string | null;
   hot: HotSpot[];
