@@ -75,6 +75,8 @@ export const AdminClient: React.FC<{ spots: PublicQrSpot[] }> = ({ spots }) => {
   const [loadedAt, setLoadedAt] = useState<Date | null>(null);
   const [coordDraft, setCoordDraft] = useState<Record<number, Coord>>({});
   const [settingDraft, setSettingDraft] = useState<Record<string, string>>({});
+  // 부스에서 직접 센 노트 실물 재고 (이 브라우저에만 기억)
+  const [notePhysical, setNotePhysical] = useState('');
   const svgRef = useRef<SVGSVGElement | null>(null);
   const dragRef = useRef<number | null>(null);
 
@@ -283,6 +285,15 @@ export const AdminClient: React.FC<{ spots: PublicQrSpot[] }> = ({ spots }) => {
 
   const s = data.settings;
   const testMode = s.test_mode === 'true';
+
+  // 노트 실물 재고 맞추기 : 총 수량 = 시스템 당첨 수 + 실물 재고
+  const noteWon = data.totals.note;
+  const noteTotal = Number(s.note_total) || 0;
+  const noteSystemLeft = Math.max(noteTotal - noteWon, 0);
+  const notePhysicalNum = notePhysical.trim() === '' ? null : Number(notePhysical);
+  const notePhysicalValid = notePhysicalNum !== null && Number.isInteger(notePhysicalNum) && notePhysicalNum >= 0;
+  const noteDiff = notePhysicalValid ? (notePhysicalNum as number) - noteSystemLeft : null;
+  const noteNewTotal = notePhysicalValid ? noteWon + (notePhysicalNum as number) : null;
   const tiles = [
     { label: '오늘 참여 기기', value: data.totals.devices_today, sub: `전체 ${data.totals.devices}` },
     { label: '오늘 스캔', value: data.totals.scans_today, sub: `전체 ${data.totals.scans}` },
@@ -347,6 +358,79 @@ export const AdminClient: React.FC<{ spots: PublicQrSpot[] }> = ({ spots }) => {
               <span className="block text-[11px] text-[#6b5640]">{t.sub}</span>
             </div>
           ))}
+        </div>
+
+        {/* 노트 실물 재고 */}
+        <div className="rounded-2xl border border-[#d8c39e] bg-white p-4 shadow-sm sm:p-6">
+          <h2 className="mb-1 text-base font-black">노트 실물 재고 맞추기</h2>
+          <p className="mb-4 text-xs text-[#6b5640]">
+            당첨되고 안 받아간 노트가 있으면 시스템 재고가 실물보다 적어집니다. 부스에 남은 노트를 세어 입력한 뒤 맞추면, 그만큼 다시 추첨에 나옵니다.
+          </p>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <div className="rounded-xl border border-[#e4d5b7] bg-[#fdfaf3] p-3.5">
+              <span className="block text-[11px] font-bold text-[#8C6239]">시스템 당첨(발급)</span>
+              <span className="mt-1 block font-mono text-2xl font-black tabular-nums">{noteWon}</span>
+              <span className="block text-[11px] text-[#6b5640]">총 수량 {noteTotal}</span>
+            </div>
+            <div className="rounded-xl border border-[#e4d5b7] bg-[#fdfaf3] p-3.5">
+              <span className="block text-[11px] font-bold text-[#8C6239]">시스템상 남은 수량</span>
+              <span className="mt-1 block font-mono text-2xl font-black tabular-nums">{noteSystemLeft}</span>
+              <span className="block text-[11px] text-[#6b5640]">지금 당첨 가능 {data.available.note}</span>
+            </div>
+            <label className="rounded-xl border-2 border-[#8C6239] bg-white p-3.5">
+              <span className="block text-[11px] font-bold text-[#8C6239]">실물 재고 (직접 센 수)</span>
+              <input
+                type="number"
+                inputMode="numeric"
+                min={0}
+                value={notePhysical}
+                onChange={(e) => setNotePhysical(e.target.value)}
+                placeholder="예: 66"
+                className="mt-1 w-full rounded-lg border border-gray-300 px-2 py-1 font-mono text-2xl font-black tabular-nums focus:border-[#8C6239] focus:outline-none"
+              />
+            </label>
+            <div
+              className={`rounded-xl border p-3.5 ${
+                noteDiff === null || noteDiff === 0
+                  ? 'border-[#e4d5b7] bg-[#fdfaf3]'
+                  : 'border-amber-400 bg-amber-50'
+              }`}
+            >
+              <span className="block text-[11px] font-bold text-[#8C6239]">차이 (실물 − 시스템)</span>
+              <span className="mt-1 block font-mono text-2xl font-black tabular-nums">
+                {noteDiff === null ? '-' : noteDiff > 0 ? `+${noteDiff}` : noteDiff}
+              </span>
+              <span className="block text-[11px] text-[#6b5640]">
+                {noteDiff === null
+                  ? '실물 재고를 입력하세요'
+                  : noteDiff > 0
+                  ? `미수령 추정 ${noteDiff}권`
+                  : noteDiff < 0
+                  ? `실물이 ${-noteDiff}권 부족`
+                  : '일치'}
+              </span>
+            </div>
+          </div>
+          <div className="mt-3 flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              disabled={busy || noteNewTotal === null || noteDiff === 0}
+              onClick={() => {
+                if (noteNewTotal === null) return;
+                act(
+                  () => adminUpdateSetting(password, 'note_total', String(noteNewTotal)),
+                  `노트 총 수량을 ${noteNewTotal}(으)로 맞췄습니다.`
+                );
+              }}
+              className="rounded-lg bg-[#8C6239] px-4 py-2 text-xs font-black text-white hover:bg-[#724f2c] disabled:opacity-40"
+            >
+              실물에 맞추기{noteNewTotal !== null && noteDiff !== 0 ? ` (총 수량 ${noteTotal} → ${noteNewTotal})` : ''}
+            </button>
+            {notePhysical.trim() !== '' && !notePhysicalValid && (
+              <span className="text-xs font-bold text-red-600">0 이상의 정수를 입력하세요.</span>
+            )}
+            <span className="text-[11px] text-[#6b5640]">총 수량 = 시스템 당첨 수 + 실물 재고</span>
+          </div>
         </div>
 
         {/* QR 좌표 & 실시간 배율 */}
