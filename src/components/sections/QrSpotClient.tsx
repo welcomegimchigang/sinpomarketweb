@@ -254,7 +254,7 @@ export const QrSpotClient: React.FC<{ spot: QrSpotItem; allSpots: PublicQrSpot[]
       ? {
           badge: '🎁 참가상 당첨 · 리워드 인증권',
           title: '참가상 인천대학교 기념 노트 수령권',
-          subtitle: '축하합니다! 참가상 인천대학교 기념 노트에 당첨되셨습니다. (총 80권, 1인 1권)',
+          subtitle: '축하합니다! 참가상 인천대학교 기념 노트에 당첨되셨습니다. (총 80권)',
           cardBg: 'from-[#2e1f11] via-[#23170c] to-[#170f07]',
           border: 'border-[#8C6239]',
           accent: 'text-[#E5A93C]',
