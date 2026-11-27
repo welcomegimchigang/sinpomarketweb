@@ -218,16 +218,16 @@ export const QrSpotClient: React.FC<{ spot: QrSpotItem; allSpots: PublicQrSpot[]
       ? {
           badge: '🎁 참가상 당첨 · 리워드 인증권',
           title: '참가상 인천대학교 기념 노트 수령권',
-          subtitle: '보물 스탬프와 함께 참가상(총 80권 선착순) 수령 대상이 되셨습니다.',
+          subtitle: '축하합니다! 참가상 인천대학교 기념 노트에 당첨되셨습니다. (총 80권, 1인 1권)',
           cardBg: 'from-[#2e1f11] via-[#23170c] to-[#170f07]',
           border: 'border-[#8C6239]',
           accent: 'text-[#E5A93C]',
           icon: Gift,
         }
       : {
-          badge: '📍 보물 스탬프 획득!',
-          title: `QR #${spot.spotCode} 스탬프를 모았습니다`,
-          subtitle: '이번 QR에서는 스탬프를 획득했습니다. 다음 골목의 QR에서 다시 행운에 도전해 보세요!',
+          badge: '😢 아쉽지만 이번엔 꽝!',
+          title: '다음 QR에서 다시 도전하세요',
+          subtitle: `이번 QR에서는 경품이 나오지 않았습니다. QR #${spot.spotCode} 스탬프는 도감에 찍혔어요. 다른 골목의 QR을 찍으면 다시 추첨됩니다!`,
           cardBg: 'from-[#2e1f11] via-[#23170c] to-[#170f07]',
           border: 'border-[#8C6239]',
           accent: 'text-[#E5A93C]',

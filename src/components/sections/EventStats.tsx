@@ -6,7 +6,7 @@ export const EventStats: React.FC = () => {
     { value: String(FESTIVAL_INFO.qrCount), unit: '개', label: '골목에 숨은 20개 QR코드' },
     { value: '2', unit: '일', label: '11.27(금) ~ 11.28(토)' },
     { value: '즉석', unit: '추첨', label: '대기 없는 QR 실시간 당첨' },
-    { value: '100', unit: '%', label: '꽝 없는 스토리텔링' },
+    { value: '100', unit: '%', label: 'QR마다 스토리 카드' },
   ];
 
   return (
